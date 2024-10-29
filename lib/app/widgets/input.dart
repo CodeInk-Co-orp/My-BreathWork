@@ -72,9 +72,6 @@ class CustomTextInput extends StatelessWidget {
           LengthLimitingTextInputFormatter(maxLength)
         ],
         decoration: InputDecoration(
-          // prefixIcon: prefix,
-          fillColor: Colors.grey.shade100,
-          filled: true,
           hintText: hintText,
           contentPadding: contentPadding ?? const EdgeInsets.symmetric(
             horizontal: 12,
