@@ -6,8 +6,9 @@ import 'package:my_breath_work/app/widgets/space.dart';
 import 'package:my_breath_work/util/colors.dart';
 
 class BackgroundScreen extends StatelessWidget {
-  BackgroundScreen({super.key, required this.body});
+  BackgroundScreen({super.key, required this.body, this.transparent});
   final Widget body;
+  final bool? transparent;
   final HomeController homeController = Get.put(HomeController());
 
   @override
@@ -29,7 +30,7 @@ class BackgroundScreen extends StatelessWidget {
           ),
           Center(
             child: Container(
-              color: Colors.white.withOpacity(.1),
+              color: Colors.white.withOpacity(transparent == null ? .1 : transparent == true ? .0 : .1),
               width: 500,
               child: body
             ),
