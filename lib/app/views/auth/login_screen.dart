@@ -71,9 +71,6 @@ class LoginScreen extends StatelessWidget {
                         label: "Password"
                       ),
                     ),
-                    const CustomSpacing(
-                      height: 0.04,
-                    ),
                     Center(
                       child: GestureDetector(
                         onTap: (){},

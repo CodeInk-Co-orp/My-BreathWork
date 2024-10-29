@@ -97,8 +97,17 @@ class CustomTextInput extends StatelessWidget {
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
               ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none
+              border: UnderlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(12),
               ),
               suffix: suffix,
             ),
