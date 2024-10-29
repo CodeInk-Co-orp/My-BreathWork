@@ -1,6 +1,7 @@
 import "package:my_breath_work/app/widgets/space.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:my_breath_work/util/colors.dart";
 
 class CustomTextInput extends StatelessWidget {
   final TextEditingController controller;
@@ -84,12 +85,12 @@ class CustomTextInput extends StatelessWidget {
             fontWeight: FontWeight.normal,
           ),
           border: UnderlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: KColors.secondaryLight),
+            borderRadius: BorderRadius.circular(0),
           ),
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: KColors.secondaryLight),
+            borderRadius: BorderRadius.circular(0),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide.none,
