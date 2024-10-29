@@ -56,7 +56,6 @@ class LoginScreen extends StatelessWidget {
                         }, 
                         textInputType: TextInputType.emailAddress, 
                         hintText: "mybreath@gmail.com", 
-                        label: "Email"
                       ),
                     ),
                     Padding(
@@ -68,7 +67,6 @@ class LoginScreen extends StatelessWidget {
                         }, 
                         textInputType: TextInputType.emailAddress, 
                         hintText: "********", 
-                        label: "Password"
                       ),
                     ),
                     Center(

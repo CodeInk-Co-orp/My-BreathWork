@@ -1,9 +1,6 @@
-import "package:my_breath_work/app/widgets/custom_spacing.dart";
 import "package:my_breath_work/app/widgets/space.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:my_breath_work/app/widgets/text.dart";
-import "package:my_breath_work/util/colors.dart";
 
 class CustomTextInput extends StatelessWidget {
   final TextEditingController controller;
@@ -12,7 +9,7 @@ class CustomTextInput extends StatelessWidget {
   final bool? obsecureText;
   final bool? enable;
   final String hintText;
-  final String label;
+  // final String label;
   final EdgeInsetsGeometry? contentPadding;
   final EdgeInsetsGeometry? outterPadding;
   final Iterable<String>? autofillHints;
@@ -44,7 +41,7 @@ class CustomTextInput extends StatelessWidget {
     this.height,
     this.suffix,
     this.prefix,
-    required this.label,
+    // required this.label,
     this.textCapitalization,
     this.outterPadding,
     this.hintShade,
@@ -58,61 +55,48 @@ class CustomTextInput extends StatelessWidget {
       padding: outterPadding ?? EdgeInsets.symmetric(
         vertical: verticalSpace(context, (height ?? 0))
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CustomText(
-            text: label, 
-            fontSize: 14, 
-            textColor: KColors.black,
-            fontWeight: FontWeight.bold,
-          ),
-          const CustomSpacing(height: .0075),
-          TextFormField(
-            controller: controller,
-            validator: validator,
-            keyboardType: textInputType,
-            maxLines: maxLines,
-            enabled: enable,
-            focusNode: focusNode,
-            onEditingComplete: onEditingComplete,
-            textCapitalization: textCapitalization ?? TextCapitalization.sentences,
-            obscureText: obsecureText ?? false,
-            autofillHints: autofillHints,
-            onChanged: onChanged,
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(maxLength)
-            ],
-            decoration: InputDecoration(
-              prefixIcon: prefix,
-              fillColor: Colors.grey.shade100,
-              filled: true,
-              hintText: hintText,
-              contentPadding: contentPadding ?? const EdgeInsets.symmetric(
-                horizontal: 12,
-              ),
-              hintStyle: TextStyle(
-                color: hintShade ?? Colors.grey.shade600,
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-              ),
-              border: UnderlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              suffix: suffix,
-            ),
-          ),
+      child: TextFormField(
+        controller: controller,
+        validator: validator,
+        keyboardType: textInputType,
+        maxLines: maxLines,
+        enabled: enable,
+        focusNode: focusNode,
+        onEditingComplete: onEditingComplete,
+        textCapitalization: textCapitalization ?? TextCapitalization.sentences,
+        obscureText: obsecureText ?? false,
+        autofillHints: autofillHints,
+        onChanged: onChanged,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(maxLength)
         ],
+        decoration: InputDecoration(
+          // prefixIcon: prefix,
+          fillColor: Colors.grey.shade100,
+          filled: true,
+          hintText: hintText,
+          contentPadding: contentPadding ?? const EdgeInsets.symmetric(
+            horizontal: 12,
+          ),
+          hintStyle: TextStyle(
+            color: hintShade ?? Colors.grey.shade600,
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+          ),
+          border: UnderlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          suffix: suffix,
+        ),
       ),
     );
   }

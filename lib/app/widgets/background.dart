@@ -1,12 +1,14 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:my_breath_work/app/http/controllers/home_controller.dart';
 import 'package:my_breath_work/app/widgets/space.dart';
 import 'package:my_breath_work/util/colors.dart';
 
 class BackgroundScreen extends StatelessWidget {
-  const BackgroundScreen({super.key, required this.body});
+  BackgroundScreen({super.key, required this.body});
   final Widget body;
+  final HomeController homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
