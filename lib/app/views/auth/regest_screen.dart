@@ -8,9 +8,9 @@ import 'package:my_breath_work/app/widgets/input.dart';
 import 'package:my_breath_work/app/widgets/text.dart';
 import 'package:my_breath_work/util/colors.dart';
 
-class LoginScreen extends StatelessWidget {
+class RegestScreen extends StatelessWidget {
   final AuthController authController = Get.put(AuthController());
-  LoginScreen({super.key});
+  RegestScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class LoginScreen extends StatelessWidget {
           ),
           const Center(
             child: CustomText(
-              text: "Log in", 
+              text: "Create an account", 
               fontSize: 25, 
               fontWeight: FontWeight.bold,
               textColor: KColors.white
@@ -45,9 +45,20 @@ class LoginScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)
               ),
               child: Form(
-                key: authController.formKey,
+                key: authController.regestKey,
                 child: Column(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: CustomTextInput(
+                        controller: authController.email, 
+                        validator: (value){
+                          return value!.isEmpty ? "Enter your name to proceed" : null;
+                        }, 
+                        textInputType: TextInputType.emailAddress, 
+                        hintText: "Name", 
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8),
                       child: CustomTextInput(
@@ -73,10 +84,10 @@ class LoginScreen extends StatelessWidget {
                     Center(
                       child: GestureDetector(
                         onTap: (){
-                          Get.offNamed("/regest");
+                          Get.offNamed("/login");
                         },
                         child: const CustomText(
-                          text: "New user? Click here to create an account.", 
+                          text: "Already registered? Log in.", 
                           fontSize: 15, 
                           textColor: KColors.secondaryLight
                         ),
@@ -89,7 +100,38 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ),          
+          ),
+          const CustomSpacing(
+            height: 0.02,
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width * .05
+            ),
+            child: Row(
+              children: [
+                Obx(()=>Checkbox(
+                  value: authController.checked.value, 
+                  onChanged: (value){
+                    authController.tooglecheckbox();
+                  }
+                 ) 
+                ),
+                const CustomText(
+                  text: "Say my name in the journey", 
+                  fontSize: 10, 
+                  textColor: KColors.white
+                ),
+              ],
+            ),
+          ),
+          const Center(
+            child: CustomText(
+              text: "Note: name pronunciation is still in beta. You can go back and uncheck this box", 
+              fontSize: 6, 
+              textColor: KColors.white
+            ),
+          ),
           const CustomSpacing(
             height: 0.04,
           ),
@@ -99,12 +141,12 @@ class LoginScreen extends StatelessWidget {
              ),
             child: CustomButton(
               onPressed: (){
-                if(authController.formKey.currentState!.validate()){
+                if(authController.regestKey.currentState!.validate()){
                 }
               }, 
               text: "Lets Go"
             ),
-          ),
+          )
         ],
       )
     );
