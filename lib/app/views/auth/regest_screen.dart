@@ -62,6 +62,17 @@ class RegestScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8),
                       child: CustomTextInput(
+                        controller: authController.email,
+                        validator: (value){
+                          return value!.isEmpty ? "Enter your name to proceed" : null;
+                        }, 
+                        textInputType: TextInputType.emailAddress, 
+                        hintText: "Name", 
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: CustomTextInput(
                         controller: authController.email, 
                         validator: (value){
                           return value!.isEmpty ? "Enter email to proceed" : null;
@@ -112,7 +123,7 @@ class RegestScreen extends StatelessWidget {
               children: [
                 Obx(()=> Checkbox(
                   value: authController.checked.value, 
-                  side: BorderSide(
+                  side: const BorderSide(
                     color: KColors.white
                   ),
                   onChanged: (value){
