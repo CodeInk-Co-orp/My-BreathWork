@@ -11,27 +11,31 @@ class BackgroundScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: verticalSpace(context, 1),
-        width: horizontalSpace(context, 1),
-        color: KColors.black,
-        child: Stack(
-          children: [
-            Transform.rotate(
+      body: Stack(
+        children: [
+          Container(
+            height: verticalSpace(context, 1),
+            width: horizontalSpace(context, 1),
+            color: KColors.black,
+            child: Transform.rotate(
               angle: pi,
               child: const Image(
                 image: AssetImage('assets/images/background_animated.gif'),
                 fit: BoxFit.cover,
               ),
             ),
-            Center(
-              child: SizedBox(
-                width: 550,
-                child: body
-              ),
-            )
-          ],
-        ),
+          ),
+          Center(
+            child: Container(
+              color: Colors.white.withOpacity(.1),
+              width: 550,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: body,
+              )
+            ),
+          ),
+        ],
       ),
     );
   }
