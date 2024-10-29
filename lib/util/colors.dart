@@ -11,4 +11,5 @@ class KColors{
   static const Color secondaryDark = Color(0xFF432947);
   static const Color secondary = Color(0xFF756388);
   static const Color secondaryLight = Color(0xFFae9bce);
+  static const Color grey = Colors.grey;
 }

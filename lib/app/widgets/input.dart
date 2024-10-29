@@ -77,21 +77,21 @@ class CustomTextInput extends StatelessWidget {
             horizontal: 12,
           ),
           hintStyle: TextStyle(
-            color: hintShade ?? Colors.grey.shade600,
+            color: hintShade ?? KColors.grey,
             fontSize: 14,
             fontWeight: FontWeight.normal,
           ),
           border: UnderlineInputBorder(
-            borderSide: const BorderSide(color: KColors.secondaryLight),
+            borderSide: const BorderSide(color: KColors.grey),
             borderRadius: BorderRadius.circular(0),
           ),
           enabledBorder: UnderlineInputBorder(
-            borderSide: const BorderSide(color: KColors.secondaryLight),
+            borderSide: const BorderSide(color: KColors.grey),
             borderRadius: BorderRadius.circular(0),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: KColors.primary, width: 2),
+            borderRadius: BorderRadius.circular(0),
           ),
           suffix: suffix,
         ),

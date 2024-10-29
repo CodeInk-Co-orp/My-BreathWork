@@ -105,9 +105,18 @@ class TryFreeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  CustomSpacing(height: .02),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      
+                    ],
+                  ),
+                  CustomSpacing(height: .03),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
