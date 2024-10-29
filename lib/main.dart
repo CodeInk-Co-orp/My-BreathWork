@@ -10,7 +10,7 @@ void main() {
       debugShowCheckedModeBanner: false,
       routes: {
         "/": (context) => HomeScreen(),
-        "/try_free": (context) => const TryFreeScreen(),
+        "/try_free": (context) => TryFreeScreen(),
         "/login": (context) => const LoginScreen(),
       },
     )
