@@ -118,14 +118,14 @@ class HomeScreen extends StatelessWidget {
               const CustomSpacing(height: .05),
               CustomButton(
                 onPressed: (){
-                  
+                  Get.toNamed("/try_free");
                 },
                 text: "TRY FREE",
               ),
               const CustomSpacing(height: .015),
               CustomButton(
                 onPressed: (){
-          
+                  Get.toNamed("/login");
                 },
                 text: "LOGIN",
               ),
