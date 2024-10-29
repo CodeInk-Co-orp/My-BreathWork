@@ -7,7 +7,7 @@ void main() {
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        "/": (context) => const HomeScreen(),
+        "/": (context) => HomeScreen(),
       },
     )
   );

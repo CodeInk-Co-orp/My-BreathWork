@@ -28,14 +28,8 @@ class BackgroundScreen extends StatelessWidget {
           Center(
             child: Container(
               color: Colors.white.withOpacity(.1),
-              width: 550,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: verticalSpace(context, .05),
-                ),
-                child: body,
-              )
+              width: 500,
+              child: body
             ),
           ),
         ],

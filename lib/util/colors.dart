@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class KColors{
   static const Color black = Color(0xFF0B050C);
+  static const Color blue = Colors.blue;
   static const Color white = Color(0xFFffffff);
   static const Color primaryDark = Color(0xFF673f71);
   static const Color primary = Color(0xFF593364);
