@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_breath_work/app/widgets/background.dart';
+import 'package:my_breath_work/app/widgets/logo.dart';
 
 class ChooseScreen extends StatelessWidget {
   const ChooseScreen({super.key});
@@ -7,7 +8,14 @@ class ChooseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BackgroundScreen(
-      body: Container(),
+      body: const SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CustomLogo(),
+          ],
+        ),
+      ),
     );
   }
 }

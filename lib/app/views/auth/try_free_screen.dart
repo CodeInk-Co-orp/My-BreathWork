@@ -5,6 +5,7 @@ import 'package:my_breath_work/app/widgets/background.dart';
 import 'package:my_breath_work/app/widgets/button.dart';
 import 'package:my_breath_work/app/widgets/custom_spacing.dart';
 import 'package:my_breath_work/app/widgets/input.dart';
+import 'package:my_breath_work/app/widgets/logo.dart';
 import 'package:my_breath_work/app/widgets/space.dart';
 import 'package:my_breath_work/app/widgets/text.dart';
 import 'package:my_breath_work/util/colors.dart';
@@ -23,12 +24,7 @@ class TryFreeScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image(
-              image: const AssetImage('assets/mybreathwork_logo_001.png'),
-              height: verticalSpace(context, .3),
-              width: horizontalSpace(context, .4),
-              color: KColors.primaryTransparent,
-            ),
+            const CustomLogo(),
             const CustomSpacing(height: .012),
             const CustomText(
               text: "Try for free",
