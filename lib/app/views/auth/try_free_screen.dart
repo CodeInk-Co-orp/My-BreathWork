@@ -144,7 +144,7 @@ class TryFreeScreen extends StatelessWidget {
                   const CustomSpacing(height: .05),
                   CustomButton(
                     onPressed: (){
-
+                      Get.offNamed('/choose');
                     },
                     text: "Let's Go"
                   )
