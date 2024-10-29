@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:my_breath_work/app/widgets/space.dart';
 import 'package:my_breath_work/util/colors.dart';
@@ -17,9 +19,12 @@ class _BackgroundScreenState extends State<BackgroundScreen> with SingleTickerPr
         height: verticalSpace(context, 1),
         width: horizontalSpace(context, 1),
         color: KColors.black,
-        child: const Image(
-          image: AssetImage('assets/images/background_animated.gif'),
-          fit: BoxFit.cover,
+        child: Transform.rotate(
+          angle: pi,
+          child: const Image(
+            image: AssetImage('assets/images/background_animated.gif'),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );

@@ -5,8 +5,9 @@ import 'package:my_breath_work/app/views/background/background.dart';
 void main() {
   runApp(
     GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       routes: {
-        "/": (context) => BackgroundScreen()
+        "/": (context) => const BackgroundScreen()
       },
     )
   );
