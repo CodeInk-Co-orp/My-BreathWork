@@ -30,7 +30,10 @@ class BackgroundScreen extends StatelessWidget {
               color: Colors.white.withOpacity(.1),
               width: 550,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: verticalSpace(context, .05),
+                ),
                 child: body,
               )
             ),

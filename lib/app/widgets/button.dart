@@ -1,6 +1,7 @@
 import "package:my_breath_work/app/widgets/space.dart";
 import "package:my_breath_work/app/widgets/text.dart";
 import "package:flutter/material.dart";
+import "package:my_breath_work/util/colors.dart";
 
 class CustomButton extends StatelessWidget {
   final void Function()? onPressed;
@@ -28,20 +29,17 @@ class CustomButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: color
+          backgroundColor: KColors.white
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(6.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CustomText(
-                text: text,
-                fontSize: 20, 
-                textColor: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ],
+        child: SizedBox(
+          width: horizontalSpace(context, .12),
+          child: Center(
+            child: CustomText(
+              text: text,
+              fontSize: 20, 
+              textColor: KColors.secondaryDark,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
