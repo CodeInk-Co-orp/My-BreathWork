@@ -110,8 +110,11 @@ class RegestScreen extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Obx(()=>Checkbox(
+                Obx(()=> Checkbox(
                   value: authController.checked.value, 
+                  side: BorderSide(
+                    color: KColors.white
+                  ),
                   onChanged: (value){
                     authController.tooglecheckbox();
                   }
@@ -119,16 +122,19 @@ class RegestScreen extends StatelessWidget {
                 ),
                 const CustomText(
                   text: "Say my name in the journey", 
-                  fontSize: 10, 
+                  fontSize: 15, 
                   textColor: KColors.white
                 ),
               ],
             ),
           ),
+          const CustomSpacing(
+            height: 0.01,
+          ),
           const Center(
             child: CustomText(
               text: "Note: name pronunciation is still in beta. You can go back and uncheck this box", 
-              fontSize: 6, 
+              fontSize: 10, 
               textColor: KColors.white
             ),
           ),
