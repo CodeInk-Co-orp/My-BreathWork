@@ -91,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               const TextSpan(
-                                text: "Breathwork can significantly reduce stress and improve mental clarity by promoting relaxation and enhancing focus. Incorporating personalized breathing excercies into your daily routine can lead to better emotional well-being and...",
+                                text: "Breath work can significantly reduce stress and improve mental clarity by promoting relaxation and enhancing focus. Incorporating personalized breathing exercises into your daily routine can lead to better emotional wellbeing and overall health.",
                                 style: TextStyle(
                                   fontSize: 20,
                                   color: KColors.white,
