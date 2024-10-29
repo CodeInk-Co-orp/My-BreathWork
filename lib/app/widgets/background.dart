@@ -25,7 +25,10 @@ class BackgroundScreen extends StatelessWidget {
               ),
             ),
             Center(
-              child: body
+              child: SizedBox(
+                width: 550,
+                child: body
+              ),
             )
           ],
         ),
