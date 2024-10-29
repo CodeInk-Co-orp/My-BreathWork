@@ -11,7 +11,7 @@ void main() {
       routes: {
         "/": (context) => HomeScreen(),
         "/try_free": (context) => const TryFreeScreen(),
-        "/login": (context) => const LoginScreen(),
+        "/login": (context) => LoginScreen(),
       },
     )
   );

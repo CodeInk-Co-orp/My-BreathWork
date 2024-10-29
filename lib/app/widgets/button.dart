@@ -36,7 +36,7 @@ class CustomButton extends StatelessWidget {
           child: Center(
             child: CustomText(
               text: text,
-              fontSize: 20, 
+              fontSize: 16, 
               textColor: KColors.secondaryDark,
               fontWeight: FontWeight.bold,
             ),
