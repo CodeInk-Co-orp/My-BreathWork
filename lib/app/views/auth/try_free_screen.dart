@@ -56,7 +56,20 @@ class TryFreeScreen extends StatelessWidget {
                     ),
                   ),
                   DropdownMenu<String>(
-                    width: double.infinity,
+                    label: const Row(
+                      children: [
+                        Icon(
+                          Icons.language
+                        ),
+                        SizedBox(width: 12),
+                        CustomText(
+                          text: "Language",
+                          fontSize: 14,
+                          textColor: KColors.black
+                        )
+                      ],
+                    ),
+                    width: 400,
                     inputDecorationTheme: InputDecorationTheme(
                       // prefixIcon: prefix,
                       fillColor: Colors.grey.shade100,
@@ -69,13 +82,13 @@ class TryFreeScreen extends StatelessWidget {
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                       ),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(12),
+                     border: UnderlineInputBorder(
+                        borderSide: const BorderSide(color: KColors.secondaryLight),
+                        borderRadius: BorderRadius.circular(0),
                       ),
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: KColors.secondaryLight),
+                        borderRadius: BorderRadius.circular(0),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide.none,

@@ -32,7 +32,7 @@ class CustomButton extends StatelessWidget {
           backgroundColor: KColors.white
         ),
         child: SizedBox(
-          width: horizontalSpace(context, .12),
+          width: 120,
           child: Center(
             child: CustomText(
               text: text,
