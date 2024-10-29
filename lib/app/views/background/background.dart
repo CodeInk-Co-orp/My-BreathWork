@@ -17,9 +17,9 @@ class _BackgroundScreenState extends State<BackgroundScreen> with SingleTickerPr
         vsync: this, 
         behaviour: RandomParticleBehaviour(
           options: ParticleOptions(
-            spawnMaxSpeed: 15,
-            particleCount: int.parse((verticalSpace(context, .01) * horizontalSpace(context, 1) / 5).toString()),
-            spawnMinSpeed: 25,
+            spawnMaxSpeed: 25,
+            particleCount: int.parse((verticalSpace(context, .01).floor() * horizontalSpace(context, 1).floor() ~/ 5).toString()),
+            spawnMinSpeed: 15,
             spawnOpacity: .75,
             baseColor: Colors.white,
           ),
