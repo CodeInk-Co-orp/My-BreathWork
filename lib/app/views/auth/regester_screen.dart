@@ -46,9 +46,8 @@ class RegesterScreen extends StatelessWidget {
                   horizontal: MediaQuery.of(context).size.width * .05
                 ),
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                    color: KColors.white,
-                  borderRadius: BorderRadius.circular(10)
                   ),
                   child: Form(
                     key: authController.regestKey,
@@ -109,58 +108,46 @@ class RegesterScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const CustomSpacing(
-                height: 0.02,
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * .05
-                ),
-                child: Row(
+              SizedBox(
+                width: 400,
+                child: Column(
                   children: [
-                    Obx(()=> Checkbox(
-                      value: authController.checked.value, 
-                      side: const BorderSide(
-                        color: KColors.white
-                      ),
-                      onChanged: (value){
-                        authController.tooglecheckbox();
-                      }
-                     ) 
+                    const CustomSpacing(height: .05),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(
+                          () => Checkbox(
+                            checkColor: KColors.white,
+                            hoverColor: KColors.grey,
+                            value: authController.checked.value,
+                            onChanged: (value){
+                              authController.checked.value = value!;
+                            }
+                          ),
+                        ),
+                        const SizedBox(width: 30),
+                        const SizedBox(
+                          width: 300,
+                          child: CustomText(
+                            text: "Say my name in the journey.\nNota that the name pronunciation is still in Beta. You can still go back and uncheck this box.",
+                            fontSize: 15,
+                            textColor: KColors.white,
+                          ),
+                        )
+                      ],
                     ),
-                    const CustomText(
-                      text: "Say my name in the journey", 
-                      fontSize: 15, 
-                      textColor: KColors.white
+                    const CustomSpacing(height: .05),
+                    CustomButton(
+                      onPressed: (){
+                        Get.offNamed('/choose');
+                      },
+                      text: "Let's Go"
                     ),
                   ],
                 ),
               ),
-              const CustomSpacing(
-                height: 0.01,
-              ),
-              const Center(
-                child: CustomText(
-                  text: "Note: name pronunciation is still in beta. You can go back and uncheck this box", 
-                  fontSize: 10, 
-                  textColor: KColors.white
-                ),
-              ),
-              const CustomSpacing(
-                height: 0.04,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * .07
-                 ),
-                child: CustomButton(
-                  onPressed: (){
-                    if(authController.regestKey.currentState!.validate()){
-                    }
-                  }, 
-                  text: "Lets Go"
-                ),
-              )
             ],
           ),
         ),
