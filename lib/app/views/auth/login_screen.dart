@@ -74,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                       Center(
                         child: GestureDetector(
                           onTap: (){
-                            Get.offNamed("/regest");
+                            Get.offNamed("/regester");
                           },
                           child: const CustomText(
                             text: "New user? Click here to create an account.", 

@@ -3,6 +3,7 @@ import 'package:my_breath_work/app/widgets/background.dart';
 import 'package:my_breath_work/app/widgets/space.dart';
 import 'package:my_breath_work/app/widgets/text.dart';
 import 'package:my_breath_work/util/colors.dart';
+import 'package:carousel_slider/carousel_slider.dart' as cs;
 
 class ChooseScreen extends StatelessWidget {
   const ChooseScreen({super.key});
@@ -49,16 +50,16 @@ class ChooseScreen extends StatelessWidget {
                       centerText: true,
                     ),
                   ),
-                  const Row(
+                  Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircleAvatar(
                         backgroundColor: KColors.primaryDark,
-                        child: CircleAvatar(
-                          backgroundColor: KColors.black,
-                          child: Padding(
-                            padding: EdgeInsets.all(1.0),
+                        child: Padding(
+                          padding: EdgeInsets.all(2.0),
+                          child: CircleAvatar(
+                            backgroundColor: KColors.black,
                             child: Icon(
                               Icons.emoji_emotions,
                               color: KColors.primaryDark,
@@ -72,6 +73,14 @@ class ChooseScreen extends StatelessWidget {
                         text: "1. Select Voice",
                         fontSize: 22,
                         textColor: KColors.white,
+                      ),
+                      cs.CarouselSlider(
+                        items: [
+                          
+                        ],
+                        options: cs.CarouselOptions(
+
+                        ),
                       ),
                     ],
                   ),

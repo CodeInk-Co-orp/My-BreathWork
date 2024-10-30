@@ -5,14 +5,15 @@ import 'package:my_breath_work/app/widgets/background.dart';
 import 'package:my_breath_work/app/widgets/button.dart';
 import 'package:my_breath_work/app/widgets/custom_spacing.dart';
 import 'package:my_breath_work/app/widgets/input.dart';
+import 'package:my_breath_work/app/widgets/language_dropdown.dart';
 import 'package:my_breath_work/app/widgets/logo.dart';
 import 'package:my_breath_work/app/widgets/space.dart';
 import 'package:my_breath_work/app/widgets/text.dart';
 import 'package:my_breath_work/util/colors.dart';
 
-class RegestScreen extends StatelessWidget {
+class RegesterScreen extends StatelessWidget {
   final AuthController authController = Get.put(AuthController());
-  RegestScreen({super.key});
+  RegesterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,34 +57,25 @@ class RegestScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8),
                           child: CustomTextInput(
-                            controller: authController.email, 
+                            controller: authController.name, 
                             validator: (value){
                               return value!.isEmpty ? "Enter your name to proceed" : null;
                             }, 
-                            textInputType: TextInputType.emailAddress, 
+                            textInputType: TextInputType.name,
+                            textCapitalization: TextCapitalization.words, 
                             hintText: "Name", 
                           ),
                         ),
+                        LanguageDropdown(controller: authController.language),
                         Padding(
                           padding: const EdgeInsets.all(8),
                           child: CustomTextInput(
                             controller: authController.email,
                             validator: (value){
-                              return value!.isEmpty ? "Enter your name to proceed" : null;
+                              return !value!.isEmail ? "Invalid e-mail address" : null;
                             }, 
                             textInputType: TextInputType.emailAddress, 
-                            hintText: "Name", 
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: CustomTextInput(
-                            controller: authController.email, 
-                            validator: (value){
-                              return value!.isEmpty ? "Enter email to proceed" : null;
-                            }, 
-                            textInputType: TextInputType.emailAddress, 
-                            hintText: "Email", 
+                            hintText: "E-mail", 
                           ),
                         ),
                         Padding(
