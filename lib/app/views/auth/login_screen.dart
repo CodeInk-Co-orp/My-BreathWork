@@ -120,9 +120,9 @@ class LoginScreen extends StatelessWidget {
               ),
               CustomButton(
                 onPressed: (){
-                  if(authController.formKey.currentState!.validate()){
-          
-                  }
+                  // if(authController.formKey.currentState!.validate()){
+                  // }
+                    authController.signIn(context);
                 }, 
                 text: "Lets Go"
               ),

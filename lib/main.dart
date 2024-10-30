@@ -7,10 +7,15 @@ import 'package:my_breath_work/app/views/choose_screen.dart';
 import 'package:my_breath_work/app/views/home_screen.dart';
 import 'package:my_breath_work/app/views/music_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
@@ -22,6 +27,6 @@ void main() async {
         "/regester": (context) =>  RegesterScreen(),
         "/music" : (context) => MusicScreen(),
       },
-    )
+    ),
   );
 }

@@ -154,9 +154,12 @@ class RegesterScreen extends StatelessWidget {
                     const CustomSpacing(height: .05),
                     CustomButton(
                       onPressed: (){
-                        Get.offNamed('/choose');
+                        if(authController.regestKey.currentState!.validate() && authController.checked.value == true){
+                          authController.signUp(context);
+                        }
+                        // Get.offNamed('/choose');
                       },
-                      text: "Let's Go"
+                      text: authController.loading.value == false ? "Let's Go" : "Loading"
                     ),
                   ],
                 ),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "305474624030",
+    "project_id": "mybreathwork-77f50",
+    "storage_bucket": "mybreathwork-77f50.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305474624030:android:6ffe5e853c72e70947ec0f",
+        "android_client_info": {
+          "package_name": "com.example.my_breath_work"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf-y4-XGlvJhTOlISw1mZxSeECX3szSJg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

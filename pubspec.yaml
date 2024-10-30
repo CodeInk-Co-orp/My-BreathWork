@@ -41,6 +41,9 @@ dependencies:
   video_player_web: ^2.3.3
   url_strategy: ^0.3.0
   carousel_slider: ^5.0.0
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.4
   
 dev_dependencies:
   flutter_test:
