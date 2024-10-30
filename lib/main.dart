@@ -5,6 +5,7 @@ import 'package:my_breath_work/app/views/auth/regester_screen.dart';
 import 'package:my_breath_work/app/views/auth/try_free_screen.dart';
 import 'package:my_breath_work/app/views/choose_screen.dart';
 import 'package:my_breath_work/app/views/home_screen.dart';
+import 'package:my_breath_work/app/views/music_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
@@ -19,6 +20,7 @@ void main() async {
         "/login": (context) =>  LoginScreen(),
         "/choose": (context) => const ChooseScreen(),
         "/regester": (context) =>  RegesterScreen(),
+        "/music" : (context) => MusicScreen(),
       },
     )
   );
