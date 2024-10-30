@@ -43,13 +43,19 @@ class ChooseScreen extends StatelessWidget {
                     ),
                     child: const CustomText(
                       text: "Create your personal Breathwork session",
-                      fontSize: 28,
+                      fontSize: 25,
                       textColor: KColors.white,
                       fontWeight: FontWeight.bold,
                       centerText: true,
                     ),
                   ),
-                  
+                  const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      
+                    ],
+                  ),
                 ],
               ),
             ),
