@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_breath_work/app/http/controllers/auth_controller.dart';
@@ -89,17 +90,29 @@ class RegesterScreen extends StatelessWidget {
                             hintText: "Password"
                           ),
                         ),
-                        Center(
-                          child: GestureDetector(
-                            onTap: (){
-                              Get.offNamed("/login");
-                            },
-                            child: const CustomText(
-                              text: "Already registered? Log in.", 
-                              fontSize: 15, 
-                              textColor: KColors.secondaryLight
-                            ),
-                          ),
+                        RichText(text: 
+                           TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: "Already registered?",
+                                style: TextStyle(
+                                  color: KColors.primaryLight,
+                                  fontSize: 15
+                                )
+                              ),
+                              TextSpan(
+                                text: " Log in.",
+                                recognizer: TapGestureRecognizer()..onTap=(){
+                                  Get.offNamed("/login");
+                                },
+                                 style: const TextStyle(
+                                  color: KColors.secondary,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ]
+                          )
                         ),
                         const CustomSpacing(
                           height: 0.02,

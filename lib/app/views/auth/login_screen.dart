@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_breath_work/app/http/controllers/auth_controller.dart';
@@ -71,17 +72,41 @@ class LoginScreen extends StatelessWidget {
                           hintText: "Password"
                         ),
                       ),
-                      Center(
-                        child: GestureDetector(
-                          onTap: (){
-                            Get.offNamed("/regester");
-                          },
-                          child: const CustomText(
-                            text: "New user? Click here to create an account.", 
-                            fontSize: 15, 
-                            textColor: KColors.secondaryLight
-                          ),
-                        ),
+                      GestureDetector(
+                        onTap: (){
+                          Get.offNamed("/regester");
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: "New user? Click ",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: KColors.primaryLight
+                                ),
+                              ),
+                              TextSpan(
+                                text: "here ",
+                                recognizer:TapGestureRecognizer()..onTap = () {
+                                  Get.offNamed("/regester");
+                                },
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  color: KColors.secondary,
+                                  fontWeight: FontWeight.bold
+                                )
+                              ),
+                              const TextSpan(
+                                text: " to create an account.",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: KColors.primaryLight
+                                )
+                              ),
+                            ]
+                          )
+                        )
                       ),
                       const CustomSpacing(
                         height: 0.02,
