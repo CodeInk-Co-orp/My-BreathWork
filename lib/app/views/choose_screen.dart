@@ -69,28 +69,31 @@ class ChooseScreen extends StatelessWidget {
                   const CustomSpacing(height: .02),
                   SizedBox(
                     height: verticalSpace(context, .4),
-                    width: 500,
+                    width: 400,
                     child: Center(
                       child: cs.CarouselSlider(
                         items: [
                           ...List.generate(
                             voices.length,
-                            (index) => Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                height: verticalSpace(context, .35),
-                                color: Colors.black,
+                            (index) => Container(
+                              height: verticalSpace(context, .35),
+                              color: Colors.white,
+                              child: Image(
+                                image: AssetImage('assets/images/${voices[index]['image']}.png')
                               ),
                             ),
                           ),
                         ],
                         options: cs.CarouselOptions(
+                          initialPage: chooseController.selected.value,
                           height: verticalSpace(context, .35),
-                          viewportFraction: .6,
-                          enlargeFactor: .3,
+                          viewportFraction: .7,
+                          enlargeFactor: .175,
+                          enlargeCenterPage: true,
                           onPageChanged: (index, reason){
-                            
-                          }
+                            chooseController.selected.value = index;
+                          },
+                          enableInfiniteScroll: false,
                         ),
                       ),
                     ),
