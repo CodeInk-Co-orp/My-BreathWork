@@ -53,7 +53,26 @@ class ChooseScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      
+                      CircleAvatar(
+                        backgroundColor: KColors.primaryDark,
+                        child: CircleAvatar(
+                          backgroundColor: KColors.black,
+                          child: Padding(
+                            padding: EdgeInsets.all(1.0),
+                            child: Icon(
+                              Icons.emoji_emotions,
+                              color: KColors.primaryDark,
+                              size: 35,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 16),
+                      CustomText(
+                        text: "1. Select Voice",
+                        fontSize: 22,
+                        textColor: KColors.white,
+                      ),
                     ],
                   ),
                 ],
