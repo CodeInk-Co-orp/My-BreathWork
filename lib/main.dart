@@ -18,7 +18,7 @@ void main() async {
         "/": (context) => HomeScreen(),
         "/try_free": (context) => TryFreeScreen(),
         "/login": (context) =>  LoginScreen(),
-        "/choose": (context) => const ChooseScreen(),
+        "/choose": (context) => ChooseScreen(),
         "/regester": (context) =>  RegesterScreen(),
         "/music" : (context) => MusicScreen(),
       },
