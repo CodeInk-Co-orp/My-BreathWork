@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_breath_work/app/widgets/background.dart';
+import 'package:my_breath_work/app/widgets/home_row.dart';
 import 'package:my_breath_work/app/widgets/space.dart';
 import 'package:my_breath_work/app/widgets/text.dart';
 import 'package:my_breath_work/util/colors.dart';
@@ -16,23 +17,7 @@ class ChooseScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image(
-                  image: AssetImage('assets/home_icon.png'),
-                  width: 40,
-                  height: 40,
-                  color: KColors.primaryLight,
-                ),
-                Image(
-                  image: AssetImage('assets/account_icon.png'),
-                  width: 40,
-                  height: 40,
-                  color: KColors.primaryLight,
-                ),
-              ],
-            ),
+            const HomeRow(),
             SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -54,7 +39,7 @@ class ChooseScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircleAvatar(
+                      const CircleAvatar(
                         backgroundColor: KColors.primaryDark,
                         child: Padding(
                           padding: EdgeInsets.all(2.0),
@@ -68,14 +53,14 @@ class ChooseScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 16),
-                      CustomText(
+                      const SizedBox(width: 16),
+                      const CustomText(
                         text: "1. Select Voice",
                         fontSize: 22,
                         textColor: KColors.white,
                       ),
                       cs.CarouselSlider(
-                        items: [
+                        items: const [
                           
                         ],
                         options: cs.CarouselOptions(
