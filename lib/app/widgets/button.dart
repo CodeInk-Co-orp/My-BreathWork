@@ -30,7 +30,7 @@ class CustomButton extends StatelessWidget {
         child: Center(
           child: CustomText(
             text: text.toUpperCase(),
-            fontSize: 20, 
+            fontSize: 16, 
             textColor: KColors.secondaryDark,
             fontWeight: FontWeight.bold,
           ),

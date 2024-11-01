@@ -47,48 +47,54 @@ class RegesterScreen extends StatelessWidget {
                   horizontal: MediaQuery.of(context).size.width * .05
                 ),
                 child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
                    color: KColors.white,
                   ),
                   child: Form(
                     key: authController.regestKey,
                     child: Column(
                       children: [
-                        Padding(
+                        Obx(()=> Padding(
                           padding: const EdgeInsets.all(8),
                           child: CustomTextInput(
                             controller: authController.name, 
                             validator: (value){
                               return value!.isEmpty ? "Enter your name to proceed" : null;
                             }, 
+                            enable: authController.loading.value ? false:true,
                             textInputType: TextInputType.name,
                             textCapitalization: TextCapitalization.words, 
                             hintText: "Name", 
                           ),
+                          ),
                         ),
                         LanguageDropdown(controller: authController.language),
-                        Padding(
+                        Obx(()=> Padding(
                           padding: const EdgeInsets.all(8),
                           child: CustomTextInput(
                             controller: authController.email,
                             validator: (value){
                               return !value!.isEmail ? "Invalid e-mail address" : null;
                             }, 
+                            enable: authController.loading.value ? false:true,
                             textInputType: TextInputType.emailAddress, 
                             hintText: "E-mail", 
                           ),
+                         ),
                         ),
-                        Padding(
+                        Obx(()=> Padding(
                           padding: const EdgeInsets.all(8),
                           child: CustomTextInput(
                             controller: authController.password, 
                             validator: (value){
                               return value!.isEmpty || value.length < 8 ? "Enter valid email of min of 8 characters" : null;
                             }, 
+                            enable: authController.loading.value ? false:true,
                             textInputType: TextInputType.emailAddress, 
                             hintText: "Password"
                           ),
-                        ),
+                        ),),
                         RichText(text: 
                            TextSpan(
                             children: [
@@ -152,14 +158,14 @@ class RegesterScreen extends StatelessWidget {
                       ],
                     ),
                     const CustomSpacing(height: .05),
-                    CustomButton(
+                    Obx(()=>CustomButton(
                       onPressed: (){
                         if(authController.regestKey.currentState!.validate() && authController.checked.value == true){
                           authController.signUp(context);
                         }
-                        // Get.offNamed('/choose');
                       },
-                      text: authController.loading.value == false ? "Let's Go" : "Loading"
+                      text: authController.loading.value ? " Loading..." : "Lets Go"
+                      ),
                     ),
                   ],
                 ),

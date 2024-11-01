@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_breath_work/app/widgets/text.dart';
+import 'package:my_breath_work/util/colors.dart';
 
 class AuthController extends GetxController{
   final TextEditingController name = TextEditingController();
@@ -16,21 +18,53 @@ class AuthController extends GetxController{
   void tooglecheckbox(){
     checked.value = !checked.value;
   }
-  void displayMessage(String message,BuildContext context){
+  
+  void displayMessage(String message,BuildContext context, String title){
     showDialog(
       context: context, 
       builder: (context) => AlertDialog(
+        title: CustomText(
+          text: title, 
+          fontSize: 20, 
+          textColor: KColors.black
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              message
+              message,
+              style: const TextStyle(
+                color: KColors.black,
+                fontSize: 16
+              ),
             )
           ],
         ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: KColors.primary,
+                borderRadius: BorderRadius.circular(8)
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: CustomText(
+                  text: "OK", 
+                  fontSize: 18, 
+                  textColor: KColors.white
+                ),
+              ),
+            ),
+          )
+        ],
       )
     );
   }
+  
   void clearFields(){
     email.clear();
     password.clear();
@@ -63,28 +97,24 @@ class AuthController extends GetxController{
           'user_id': userCredential.user!.uid,
         }
       );
-      Get.off('/choose');
+      if (context.mounted) {
+        Get.offNamed("/choose");
+      }
       clearFields();
       loading.value = false;
     } on FirebaseAuthException catch (e) {
         loading.value = false;
-        Get.back();
-        displayMessage(e.message!,context);
+        displayMessage(e.message!,context,"Error!!");
         clearFields();
         Get.back();
     }
   }
+  
   void signIn(BuildContext context) async {
     loading.value = true;
-    const Center(
-      child: CircularProgressIndicator(
-        backgroundColor: Colors.white,
-        strokeWidth: 10,
-      ),
-    );
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email.text, 
+        email: email.text,
         password: password.text
       );
       if (context.mounted) {
@@ -93,14 +123,9 @@ class AuthController extends GetxController{
       loading.value = false;
       clearFields();
     } on FirebaseAuthException catch (e) {
-      loading.value = false;
-      Get.back();
-      displayMessage(e.code,context);
+        displayMessage(e.code,context,"Error!!");
+        loading.value = false;
+        // Get.back();
     }
-  }
-  @override
-  void onClose() {
-    formKey;
-    super.onClose();
   }
 }

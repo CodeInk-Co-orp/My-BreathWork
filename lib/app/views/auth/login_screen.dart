@@ -42,15 +42,16 @@ class LoginScreen extends StatelessWidget {
                 height: 0.05,
               ),
               Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: KColors.white,
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 width: 400,
                 child: Form(
                   key: authController.formKey,
                   child: Column(
                     children: [
-                      Padding(
+                      Obx(()=> Padding(
                         padding: const EdgeInsets.all(8),
                         child: CustomTextInput(
                           controller: authController.email, 
@@ -58,10 +59,12 @@ class LoginScreen extends StatelessWidget {
                             return value!.isEmpty ? "Enter email to proceed" : null;
                           }, 
                           textInputType: TextInputType.emailAddress, 
+                          enable: authController.loading.value ? false:true,
                           hintText: "Email", 
                         ),
+                        ),
                       ),
-                      Padding(
+                      Obx(()=> Padding(
                         padding: const EdgeInsets.all(8),
                         child: CustomTextInput(
                           controller: authController.password, 
@@ -69,9 +72,11 @@ class LoginScreen extends StatelessWidget {
                             return value!.isEmpty || value.length < 8 ? "Enter valid email of min of 8 characters" : null;
                           }, 
                           textInputType: TextInputType.emailAddress, 
+                          enable: authController.loading.value ? false:true,
                           hintText: "Password"
                         ),
-                      ),
+                       ),
+                      ),                      
                       GestureDetector(
                         onTap: (){
                           Get.offNamed("/regester");
@@ -118,14 +123,15 @@ class LoginScreen extends StatelessWidget {
               const CustomSpacing(
                 height: 0.05,
               ),
-              CustomButton(
+              Obx(()=> CustomButton(
                 onPressed: (){
-                  // if(authController.formKey.currentState!.validate()){
-                  // }
+                  if(authController.formKey.currentState!.validate()){
                     authController.signIn(context);
+                  }                    
                 }, 
-                text: "Lets Go"
-              ),
+                text: authController.loading.value ? " Loading..." : "Lets Go"
+               ),   
+              ),                                     
             ],
           ),
         ),
