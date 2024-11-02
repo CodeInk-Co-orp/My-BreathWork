@@ -25,3 +25,15 @@ List<Map<String, dynamic>> voices = [
     'image': 'GUIDE_amelia'
   },
 ];
+
+List<String> music = [
+  'Space',
+  'Hip Hop',
+  'Techno'
+];
+
+List<String> purpose = [
+  'Focus',
+  'Be Happy',
+  'Sleep Better'
+];

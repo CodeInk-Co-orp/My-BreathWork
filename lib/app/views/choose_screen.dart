@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_breath_work/app/data/dummy.dart';
@@ -56,11 +54,10 @@ class ChooseScreen extends StatelessWidget {
                               voices.length,
                               (index) => Column(
                                 children: [
-                                  // Obx(
-                                  //   () => 
+                                  Obx(
+                                    () => 
                                     Transform(
-                                      // transform: Matrix4.rotationY(index != chooseController.voice.value ? index > chooseController.voice.value ? (pi / 2.5) : (pi / -2.5) : 0),
-                                      transform: Matrix4.rotationY(2),
+                                      transform: Matrix4.skewY(index != chooseController.voice.value ? .2 : 0),
                                       child: Container(
                                         height: verticalSpace(context, .35),
                                         color: Colors.white,
@@ -70,7 +67,7 @@ class ChooseScreen extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                  // ),
+                                  ),
                                   const CustomSpacing(height: .02),
                                   CustomText(
                                     text: voices[index]['name'],
@@ -84,13 +81,13 @@ class ChooseScreen extends StatelessWidget {
                           options: cs.CarouselOptions(
                             initialPage: chooseController.voice.value,
                             height: verticalSpace(context, .5),
-                            viewportFraction: .7,
+                            viewportFraction: .75,
                             enlargeFactor: .175,
                             enlargeCenterPage: true,
                             onPageChanged: (index, reason){
                               chooseController.voice.value = index;
                             },
-                            enableInfiniteScroll: true,
+                            enableInfiniteScroll: false,
                           ),
                         ),
                       ),
@@ -110,33 +107,37 @@ class ChooseScreen extends StatelessWidget {
               const CustomSpacing(height: .05),
               SizedBox(
                 height: 50,
-                width: 300,
+                width: 200,
                 child: Center(
                   child: cs.CarouselSlider(
                     items: [
                       ...List.generate(
-                        3,
-                        (index) => Container(
-                          width: 120,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: index == chooseController.voice.value ? KColors.primaryDark : KColors.secondary,
-                          ),
-                          child: const Center(
-                            child: CustomText(
-                              text: "Something",
-                              fontSize: 18,
-                              textColor: Colors.white,
-                              centerText: true,
-                              fontWeight: FontWeight.bold,
+                        music.length,
+                        (index) => Obx(
+                          () => Container(
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: index == chooseController.music.value ? KColors.primary : KColors.secondary,
+                            ),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                child: CustomText(
+                                  text: music[index],
+                                  fontSize: 16,
+                                  textColor: Colors.white,
+                                  centerText: true,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ],
                     options: cs.CarouselOptions(
-                      initialPage: chooseController.voice.value,
+                      initialPage: chooseController.music.value,
                       height: 50,
                       viewportFraction: .6,
                       enlargeFactor: .2,
@@ -144,7 +145,55 @@ class ChooseScreen extends StatelessWidget {
                       onPageChanged: (index, reason){
                         chooseController.music.value = index;
                       },
-                      enableInfiniteScroll: true,
+                      enableInfiniteScroll: false,
+                    ),
+                  ),
+                ),
+              ),
+              const CustomSpacing(height: .075),
+              const ChooseLabel(icon: Icons.music_note, label: "3. Select Purpose"),
+              const CustomSpacing(height: .05),
+              SizedBox(
+                height: 50,
+                width: 200,
+                child: Center(
+                  child: cs.CarouselSlider(
+                    items: [
+                      ...List.generate(
+                        purpose.length,
+                        (index) => Obx(
+                          () => Container(
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: index == chooseController.purpose.value ? KColors.primary : KColors.secondary,
+                            ),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                child: CustomText(
+                                  text: purpose[index],
+                                  fontSize: 16,
+                                  textColor: Colors.white,
+                                  centerText: true,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                    options: cs.CarouselOptions(
+                      initialPage: chooseController.purpose.value,
+                      height: 50,
+                      viewportFraction: .6,
+                      enlargeFactor: .2,
+                      enlargeCenterPage: true,
+                      onPageChanged: (index, reason){
+                        chooseController.purpose.value = index;
+                      },
+                      enableInfiniteScroll: false,
                     ),
                   ),
                 ),
