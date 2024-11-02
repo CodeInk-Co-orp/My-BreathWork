@@ -82,7 +82,7 @@ class ChooseScreen extends StatelessWidget {
                           options: cs.CarouselOptions(
                             initialPage: chooseController.voice.value,
                             height: verticalSpace(context, .5),
-                            viewportFraction: .75,
+                            viewportFraction: .7,
                             enlargeFactor: .175,
                             enlargeCenterPage: true,
                             onPageChanged: (index, reason){
@@ -225,6 +225,7 @@ class ChooseScreen extends StatelessWidget {
                 },
                 text: 'Create',
               ),
+              const CustomSpacing(height: .075),
             ],
           ),
         ),
