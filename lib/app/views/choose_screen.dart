@@ -114,22 +114,25 @@ class ChooseScreen extends StatelessWidget {
                     items: [
                       ...List.generate(
                         music.length,
-                        (index) => Obx(
-                          () => Container(
-                            height: 30,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: index == chooseController.music.value ? KColors.primary : KColors.secondary,
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                child: CustomText(
-                                  text: music[index],
-                                  fontSize: 16,
-                                  textColor: Colors.white,
-                                  centerText: true,
-                                  fontWeight: FontWeight.bold,
+                        (index) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Obx(
+                            () => Container(
+                              height: 30,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: index == chooseController.music.value ? KColors.primary : KColors.secondary,
+                              ),
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  child: CustomText(
+                                    text: music[index],
+                                    fontSize: 16,
+                                    textColor: Colors.white,
+                                    centerText: true,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -168,22 +171,25 @@ class ChooseScreen extends StatelessWidget {
                     items: [
                       ...List.generate(
                         purpose.length,
-                        (index) => Obx(
-                          () => Container(
-                            height: 30,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: index == chooseController.purpose.value ? KColors.primary : KColors.secondary,
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                child: CustomText(
-                                  text: purpose[index],
-                                  fontSize: 16,
-                                  textColor: Colors.white,
-                                  centerText: true,
-                                  fontWeight: FontWeight.bold,
+                        (index) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Obx(
+                            () => Container(
+                              height: 30,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: index == chooseController.purpose.value ? KColors.primary : KColors.secondary,
+                              ),
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  child: CustomText(
+                                    text: purpose[index],
+                                    fontSize: 16,
+                                    textColor: Colors.white,
+                                    centerText: true,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
