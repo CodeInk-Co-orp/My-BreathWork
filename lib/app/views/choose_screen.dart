@@ -61,7 +61,7 @@ class ChooseScreen extends StatelessWidget {
                                       transform: Matrix4.skewY(index != chooseController.voice.value ? .2 : 0),
                                       child: Container(
                                         height: verticalSpace(context, .35),
-                                        color: Colors.white,
+                                        color: Colors.black.withOpacity(index == chooseController.voice.value ? 0 : .2),
                                         child: Image(
                                           image: AssetImage('assets/images/${voices[index]['image']}.png'),
                                           fit: BoxFit.cover,
