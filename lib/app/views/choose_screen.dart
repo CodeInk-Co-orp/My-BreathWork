@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:my_breath_work/app/data/dummy.dart';
 import 'package:my_breath_work/app/http/controllers/choose_controller.dart';
 import 'package:my_breath_work/app/widgets/background.dart';
+import 'package:my_breath_work/app/widgets/button.dart';
 import 'package:my_breath_work/app/widgets/choose_label.dart';
 import 'package:my_breath_work/app/widgets/custom_spacing.dart';
 import 'package:my_breath_work/app/widgets/home_row.dart';
@@ -99,7 +100,7 @@ class ChooseScreen extends StatelessWidget {
                 () => CustomText(
                   text: voices[chooseController.voice.value]['label'],
                   fontSize: 14,
-                  textColor: KColors.primaryTransparent,
+                  textColor: KColors.lightGrey,
                 ),
               ),
               const CustomSpacing(height: .075),
@@ -107,7 +108,7 @@ class ChooseScreen extends StatelessWidget {
               const CustomSpacing(height: .05),
               SizedBox(
                 height: 50,
-                width: 200,
+                width: 250,
                 child: Center(
                   child: cs.CarouselSlider(
                     items: [
@@ -150,12 +151,18 @@ class ChooseScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const CustomSpacing(height: .075),
+              const CustomSpacing(height: .05),
+              CustomText(
+                text: "Gives you energy boost and the strength to fight.",
+                fontSize: 14,
+                textColor: KColors.lightGrey,
+              ),
+              const CustomSpacing(height: .05),
               const ChooseLabel(icon: Icons.music_note, label: "3. Select Purpose"),
               const CustomSpacing(height: .05),
               SizedBox(
                 height: 50,
-                width: 200,
+                width: 250,
                 child: Center(
                   child: cs.CarouselSlider(
                     items: [
@@ -197,6 +204,20 @@ class ChooseScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
+              const CustomSpacing(height: .05),
+              CustomText(
+                text: "Gives you energy boost and the strength to fight.",
+                fontSize: 14,
+                textColor: KColors.lightGrey,
+              ),
+              const CustomSpacing(height: .075),
+              CustomButton(
+                width: 250,
+                onPressed: (){
+
+                },
+                text: 'Create',
               ),
             ],
           ),
