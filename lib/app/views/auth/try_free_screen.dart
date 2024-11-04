@@ -22,84 +22,86 @@ class TryFreeScreen extends StatelessWidget {
           horizontal: 16,
           vertical: verticalSpace(context, .05),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CustomLogo(),
-            const CustomSpacing(height: .012),
-            const CustomText(
-              text: "Try for free",
-              fontSize: 28,
-              textColor: KColors.white,
-              fontWeight: FontWeight.bold,
-            ),
-            const CustomSpacing(height: .05),
-            Container(
-              width: 400,
-              decoration: const BoxDecoration(
-                color: KColors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const CustomLogo(),
+              const CustomSpacing(height: .012),
+              const CustomText(
+                text: "Try for free",
+                fontSize: 28,
+                textColor: KColors.white,
+                fontWeight: FontWeight.bold,
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomTextInput(
-                    controller: tryFreeController.nameController,
-                    validator: (value){
-                      return value!.isEmpty ? "Field cannot be blank" : null;
-                    },
-                    textInputType: TextInputType.name,
-                    textCapitalization: TextCapitalization.words,
-                    hintText: "Name",
-                    prefix: const Icon(
-                      Icons.person,
-                    ),
-                  ),
-                  const CustomSpacing(height: .01),
-                  LanguageDropdown(controller: tryFreeController.languageController)
-                ],
-              ),
-            ),
-            SizedBox(
-              width: 400,
-              child: Column(
-                children: [
-                  const CustomSpacing(height: .05),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Obx(
-                        () => Checkbox(
-                          checkColor: KColors.white,
-                          hoverColor: KColors.grey,
-                          value: tryFreeController.sayName.value,
-                          onChanged: (value){
-                            tryFreeController.sayName.value = value!;
-                          }
-                        ),
+              const CustomSpacing(height: .05),
+              Container(
+                width: 400,
+                decoration: const BoxDecoration(
+                  color: KColors.white,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomTextInput(
+                      controller: tryFreeController.nameController,
+                      validator: (value){
+                        return value!.isEmpty ? "Field cannot be blank" : null;
+                      },
+                      textInputType: TextInputType.name,
+                      textCapitalization: TextCapitalization.words,
+                      hintText: "Name",
+                      prefix: const Icon(
+                        Icons.person,
                       ),
-                      const SizedBox(width: 30),
-                      const SizedBox(
-                        width: 300,
-                        child: CustomText(
-                          text: "Say my name in the journey.\nNota that the name pronunciation is still in Beta. You can still go back and uncheck this box.",
-                          fontSize: 15,
-                          textColor: KColors.white,
-                        ),
-                      )
-                    ],
-                  ),
-                  const CustomSpacing(height: .05),
-                  CustomButton(
-                    onPressed: (){
-                      Get.offNamed('/choose');
-                    },
-                    text: "Let's Go"
-                  ),
-                ],
+                    ),
+                    const CustomSpacing(height: .01),
+                    LanguageDropdown(controller: tryFreeController.languageController)
+                  ],
+                ),
               ),
-            )
-          ],
+              SizedBox(
+                width: 400,
+                child: Column(
+                  children: [
+                    const CustomSpacing(height: .05),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(
+                          () => Checkbox(
+                            checkColor: KColors.white,
+                            hoverColor: KColors.grey,
+                            value: tryFreeController.sayName.value,
+                            onChanged: (value){
+                              tryFreeController.sayName.value = value!;
+                            }
+                          ),
+                        ),
+                        const SizedBox(width: 30),
+                        const SizedBox(
+                          width: 300,
+                          child: CustomText(
+                            text: "Say my name in the journey.\nNota that the name pronunciation is still in Beta. You can still go back and uncheck this box.",
+                            fontSize: 15,
+                            textColor: KColors.white,
+                          ),
+                        )
+                      ],
+                    ),
+                    const CustomSpacing(height: .05),
+                    CustomButton(
+                      onPressed: (){
+                        Get.offNamed('/choose');
+                      },
+                      text: "Let's Go"
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
