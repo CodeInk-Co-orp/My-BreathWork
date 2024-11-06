@@ -97,11 +97,9 @@ class AuthController extends GetxController{
           'user_id': userCredential.user!.uid,
         }
       );
-      if (context.mounted) {
-        Get.offNamed("/choose");
-      }
       clearFields();
       loading.value = false;
+      Get.offNamed("/choose");
     } on FirebaseAuthException catch (e) {
         loading.value = false;
         displayMessage(e.message!,context,"Error!!");
@@ -125,7 +123,6 @@ class AuthController extends GetxController{
     } on FirebaseAuthException catch (e) {
         displayMessage(e.code,context,"Error!!");
         loading.value = false;
-        // Get.back();
     }
   }
 }

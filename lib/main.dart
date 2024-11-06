@@ -19,6 +19,7 @@ void main() async {
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      initialRoute: "/",
       routes: {
         "/": (context) => HomeScreen(),
         "/try_free": (context) => TryFreeScreen(),

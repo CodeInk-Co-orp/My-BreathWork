@@ -8,6 +8,7 @@ class CustomButton extends StatelessWidget {
   final double? horizontalPadding;
   final double? verticalPadding;
   final Color? color;
+  final double? width;
   
   const CustomButton({
     super.key, 
@@ -15,7 +16,7 @@ class CustomButton extends StatelessWidget {
     required this.text,
     this.horizontalPadding,
     this.verticalPadding,
-    this.color
+    this.color, this.width
   });
 
   @override
@@ -26,13 +27,16 @@ class CustomButton extends StatelessWidget {
         backgroundColor: KColors.white
       ),
       child: SizedBox(
-        width: 120,
+        width: width ?? 120,
         child: Center(
-          child: CustomText(
-            text: text.toUpperCase(),
-            fontSize: 16, 
-            textColor: KColors.secondaryDark,
-            fontWeight: FontWeight.bold,
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: CustomText(
+              text: text.toUpperCase(),
+              fontSize: 20, 
+              textColor: KColors.secondaryDark,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
