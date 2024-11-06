@@ -87,6 +87,7 @@ class ChooseScreen extends StatelessWidget {
                             enlargeCenterPage: true,
                             onPageChanged: (index, reason){
                               chooseController.voice.value = index;
+                              chooseController.togglePlayer();
                             },
                             enableInfiniteScroll: false,
                           ),

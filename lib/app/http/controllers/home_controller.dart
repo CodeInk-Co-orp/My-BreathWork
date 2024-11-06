@@ -6,14 +6,14 @@ class HomeController extends GetxController{
 
   AudioPlayer audioPlayer = AudioPlayer();
 
-  initiateMusic() async {
-    await audioPlayer.setAsset("assets/music/Space_[music_background_audio_file].mp3");
-    await audioPlayer.play();
-  }
+  // initiateMusic() async {
+  //   await audioPlayer.setAsset("assets/music/Space_[music_background_audio_file].mp3");
+  //   await audioPlayer.play();
+  // }
 
   @override
   void onInit() {
-    initiateMusic();
+    // initiateMusic();
     super.onInit();
   }
 
