@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_breath_work/app/http/controllers/try_free_controller.dart';
+import 'package:my_breath_work/app/services/local_storage.dart';
 import 'package:my_breath_work/app/widgets/background.dart';
 import 'package:my_breath_work/app/widgets/button.dart';
 import 'package:my_breath_work/app/widgets/custom_spacing.dart';
@@ -40,24 +41,27 @@ class TryFreeScreen extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: KColors.white,
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CustomTextInput(
-                      controller: tryFreeController.nameController,
-                      validator: (value){
-                        return value!.isEmpty ? "Field cannot be blank" : null;
-                      },
-                      textInputType: TextInputType.name,
-                      textCapitalization: TextCapitalization.words,
-                      hintText: "Name",
-                      prefix: const Icon(
-                        Icons.person,
+                child: Form(
+                  key: tryFreeController.formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CustomTextInput(
+                        controller: tryFreeController.nameController,
+                        validator: (value){
+                          return value!.isEmpty ? "Field cannot be blank" : null;
+                        },
+                        textInputType: TextInputType.name,
+                        textCapitalization: TextCapitalization.words,
+                        hintText: "Name",
+                        prefix: const Icon(
+                          Icons.person,
+                        ),
                       ),
-                    ),
-                    const CustomSpacing(height: .01),
-                    LanguageDropdown(controller: tryFreeController.languageController)
-                  ],
+                      const CustomSpacing(height: .01),
+                      LanguageDropdown(controller: tryFreeController.languageController)
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -92,8 +96,15 @@ class TryFreeScreen extends StatelessWidget {
                     ),
                     const CustomSpacing(height: .05),
                     CustomButton(
-                      onPressed: (){
-                        Get.offNamed('/choose');
+                      onPressed: () async {
+                        if(tryFreeController.formKey.currentState!.validate()){
+                          await storeData(
+                            tryFreeController.nameController.text,
+                            language: tryFreeController.languageController.text == 'Swedish' ? 'se' : 'en',
+                            sayName: tryFreeController.sayName.value
+                          );
+                          Get.toNamed('/choose');
+                        }
                       },
                       text: "Let's Go"
                     ),

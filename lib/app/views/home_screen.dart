@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_breath_work/app/http/controllers/home_controller.dart';
+import 'package:my_breath_work/app/services/local_storage.dart';
 import 'package:my_breath_work/app/widgets/background.dart';
 import 'package:my_breath_work/app/widgets/button.dart';
 import 'package:my_breath_work/app/widgets/custom_spacing.dart';
@@ -113,8 +114,13 @@ class HomeScreen extends StatelessWidget {
               ),
               const CustomSpacing(height: .05),
               CustomButton(
-                onPressed: (){
-                  Get.toNamed("/try_free");
+                onPressed: () async {
+                  bool isNotBlank = await isSet();
+                  if(isNotBlank){
+                    Get.toNamed("/choose");
+                  } else {
+                    Get.toNamed("/try_free");
+                  }
                 },
                 text: "TRY FREE",
               ),

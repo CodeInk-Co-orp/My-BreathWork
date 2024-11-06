@@ -20,7 +20,7 @@ class ChooseController extends GetxController{
 
   @override
   void onInit() {
-    togglePlayer();
+    // togglePlayer();
     super.onInit();
   }
 }

@@ -11,6 +11,7 @@ class LanguageDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownMenu<String>(
       controller: controller,
+      enableSearch: false,
       label: const Row(
         children: [
           Icon(
