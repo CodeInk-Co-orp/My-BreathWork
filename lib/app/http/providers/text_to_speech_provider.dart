@@ -5,11 +5,12 @@ import 'package:http/http.dart' as http;
 
 MyCustomSource? myCustomSource;
 
-Future<void> sendRequest(String input) async {
+Future<void> sendRequest(String input, int user) async {
+  List<String> voiceType = ['JBFqnCBsd6RMkjVDRZzb', '9BWtsMINqrJLrRacOk9x','bIHbv24MWmeRgasZH58o', 'EXAVITQu4vr4xnSDxMaL'];
   try{
     await http.post(
       // encoding: Encoding,
-      Uri.parse("https://api.elevenlabs.io/v1/text-to-speech/9BWtsMINqrJLrRacOk9x"),
+      Uri.parse("https://api.elevenlabs.io/v1/text-to-speech/${voiceType[user]}"),
       body: jsonEncode({
         'text': input,
         'voice_settings': {

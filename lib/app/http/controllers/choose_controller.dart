@@ -13,7 +13,7 @@ class ChooseController extends GetxController{
 
   Future<void> togglePlayer({String? language}) async {
     String text = await replaceData(dummyVoices[voice.value]);
-    await sendRequest(text);
+    await sendRequest(text, voice.value);
     await audioPlayer.setAudioSource(myCustomSource!);
     await audioPlayer.play();
   }
