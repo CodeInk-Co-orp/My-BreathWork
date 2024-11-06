@@ -106,7 +106,7 @@ class TryFreeScreen extends StatelessWidget {
                           Get.toNamed('/choose');
                         }
                       },
-                      text: "Let's Go"
+                      text: "Let's Go",
                     ),
                   ],
                 ),
