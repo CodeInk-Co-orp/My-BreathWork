@@ -7,7 +7,7 @@ import 'package:my_breath_work/app/views/auth/try_free_screen.dart';
 import 'package:my_breath_work/app/views/auth/verify_email.dart';
 import 'package:my_breath_work/app/views/choose_screen.dart';
 import 'package:my_breath_work/app/views/home_screen.dart';
-import 'package:my_breath_work/app/views/music_screen.dart';
+import 'package:my_breath_work/app/views/breathwork_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';

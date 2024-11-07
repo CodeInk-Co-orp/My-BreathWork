@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
 
 class BreathworkController extends GetxController{
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -12,4 +13,5 @@ class BreathworkController extends GetxController{
   Stream<DocumentSnapshot> dataStream(String id){
     return firebaseFirestore.collection('breathwork').doc(id).snapshots();
   }
+  AudioPlayer audioPlayer = AudioPlayer();
 }
