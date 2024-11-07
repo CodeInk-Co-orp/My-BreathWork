@@ -6,6 +6,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:my_breath_work/app/data/dummy.dart';
 import 'package:my_breath_work/app/http/providers/text_to_speech_provider.dart';
 import 'package:my_breath_work/app/services/local_storage.dart';
+import 'package:my_breath_work/app/services/logging.dart';
 
 class ChooseController extends GetxController{
   RxInt voice = 1.obs;
@@ -14,12 +15,21 @@ class ChooseController extends GetxController{
   RxBool loading = false.obs;
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   AudioPlayer audioPlayer = AudioPlayer();
+  AudioPlayer voiceAudioPlayer = AudioPlayer();
 
   Future<void> togglePlayer({String? language}) async {
-    String text = await replaceData(dummyVoices[voice.value]);
-    await sendRequest(text, voice.value);
-    await audioPlayer.setAudioSource(myCustomSource!);
-    await audioPlayer.play();
+    try{
+      String text = await replaceData(dummyVoices[voice.value]);
+      await sendRequest(text, voice.value);
+      Logging.print("03...");
+      await voiceAudioPlayer.setAudioSource(myCustomSource!);
+      Logging.print("04...");
+      await voiceAudioPlayer.play();
+      Logging.print("05...");
+    } catch(e){
+      Logging.print("Error: $e");
+      // rethrow;
+    }
   }
 
   Future<void> loadMusic(String asset) async {

@@ -24,7 +24,6 @@ Future<void> sendRequest(String input, int user) async {
     ).then(
       (value) {
         myCustomSource = MyCustomSource(value.bodyBytes);
-        return value.bodyBytes.toList();
       },
     );
   } on FormatException {
