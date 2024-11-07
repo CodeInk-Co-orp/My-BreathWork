@@ -52,7 +52,8 @@ class ChooseController extends GetxController{
           'purpose': purposes[purpose.value]['label'],
           'title': "Breathwork ${DateTime.now().millisecondsSinceEpoch}.mp3",
         }
-      ).then((value){
+      ).then((value) async {
+        await storeId(value.id);
         Get.toNamed(
           '/my_breathwork',
           arguments: {

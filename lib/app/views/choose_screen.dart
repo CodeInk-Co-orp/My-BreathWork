@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_breath_work/app/data/dummy.dart';
 import 'package:my_breath_work/app/http/controllers/choose_controller.dart';
+import 'package:my_breath_work/app/services/local_storage.dart';
 import 'package:my_breath_work/app/widgets/background.dart';
 import 'package:my_breath_work/app/widgets/button.dart';
 import 'package:my_breath_work/app/widgets/choose_label.dart';
@@ -282,7 +283,8 @@ class ChooseScreen extends StatelessWidget {
                                   shrinkWrap: true,
                                   physics: const ClampingScrollPhysics(),
                                   itemBuilder: (context, index) => ListTile(
-                                    onTap: (){
+                                    onTap: () async {
+                                      await storeId(docs[index].id);
                                       Get.toNamed(
                                         '/my_breathwork',
                                         arguments: {

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:my_breath_work/app/services/local_storage.dart';
 
 import '../providers/text_to_speech_provider.dart';
 
@@ -19,6 +20,7 @@ class BreathworkController extends GetxController{
   RxBool started = false.obs;
   MyCustomSource? choice;
   Timer? timer;
+  String? previousBreathwork;
 
   Stream<DocumentSnapshot<Map<String, dynamic>>> dataStream(String id){
     return firebaseFirestore.collection('breathwork').doc(id).snapshots();
@@ -41,6 +43,7 @@ class BreathworkController extends GetxController{
     await mix1Player.setAudioSource(AudioSource.asset(mix1));
     await mix2Player.setAudioSource(AudioSource.asset(mix2));
     await mix3Player.setAudioSource(AudioSource.asset(mix3));
+    previousBreathwork = await fetchId();
   }
 
   Future<void> play() async {

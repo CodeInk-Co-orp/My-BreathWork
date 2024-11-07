@@ -21,7 +21,9 @@ class BreathworkScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BackgroundScreen(
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: breathworkController.dataStream(Get.arguments['breathwork_id']),
+        stream: breathworkController.dataStream(
+          Get.arguments != null ? Get.arguments['breathwork_id'] : breathworkController.previousBreathwork,
+        ),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Skeletonizer(
