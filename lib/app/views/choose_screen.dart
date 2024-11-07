@@ -260,7 +260,7 @@ class ChooseScreen extends StatelessWidget {
                     text: 'Create',
                   ),
                   Visibility(
-                    visible: Get.arguments != null ? Get.arguments['from'].toString() != 'try_free' : false,
+                    visible: Get.arguments != null ? Get.arguments['from'].toString() != 'try_free' : true,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

@@ -7,16 +7,15 @@ import 'package:my_breath_work/app/views/choose_screen.dart';
 
 class CheckLoginStatus extends StatelessWidget {
   CheckLoginStatus({super.key});
-  AuthController authController = Get.put(AuthController());
+  final AuthController authController = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {          
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
-        
         if (snapshot.hasData) {
           return ChooseScreen();
         } else {

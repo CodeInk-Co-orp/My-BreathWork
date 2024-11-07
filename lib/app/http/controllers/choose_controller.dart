@@ -46,6 +46,7 @@ class ChooseController extends GetxController{
       Get.toNamed('/my_breathwork');
       loading.value = false;
     } catch(e){
+      Get.snackbar("Failed!!!", e.toString());
       loading.value = false;
       rethrow;
     }

@@ -29,7 +29,7 @@ void main() async {
         "/login": (context) =>  LoginScreen(),
         "/choose": (context) => ChooseScreen(),
         "/regester": (context) =>  RegesterScreen(),
-        "/music" : (context) => MusicScreen(),
+        "/my_breathwork" : (context) => MusicScreen(),
         "/verify" : (context) => VerifyEmail(),
       },
     ),
