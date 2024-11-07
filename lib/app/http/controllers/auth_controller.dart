@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_breath_work/app/widgets/text.dart';
+import 'dart:async';
 import 'package:my_breath_work/util/colors.dart';
 
 class AuthController extends GetxController{
@@ -14,12 +15,15 @@ class AuthController extends GetxController{
   final regestKey = GlobalKey<FormState>();
   RxBool checked = false.obs;
   final loading = false.obs;
+  late final isverified = false.obs;
+  RxInt seconds = 0.obs;
+  Timer? timer;
 
   void tooglecheckbox(){
     checked.value = !checked.value;
   }
   
-  void displayMessage(String message,BuildContext context, String title){
+  void displayMessage(String message,BuildContext context, String title, void Function()? onTap){
     showDialog(
       context: context, 
       builder: (context) => AlertDialog(
@@ -41,24 +45,47 @@ class AuthController extends GetxController{
           ],
         ),
         actions: [
-          GestureDetector(
-            onTap: () {
-              Get.back();
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: KColors.primary,
-                borderRadius: BorderRadius.circular(8)
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CustomText(
-                  text: "OK", 
-                  fontSize: 18, 
-                  textColor: KColors.white
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Get.back();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: KColors.primary,
+                    borderRadius: BorderRadius.circular(8)
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CustomText(
+                      text: "OK", 
+                      fontSize: 18, 
+                      textColor: KColors.white
+                    ),
+                  ),
                 ),
               ),
-            ),
+              GestureDetector(
+                onTap: () {
+                  Get.back();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: KColors.primary,
+                    borderRadius: BorderRadius.circular(8)
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CustomText(
+                      text: "OK", 
+                      fontSize: 18, 
+                      textColor: KColors.white
+                    ),
+                  ),
+                ),
+              ),
+            ],
           )
         ],
       )
@@ -102,7 +129,7 @@ class AuthController extends GetxController{
       Get.offNamed("/choose");
     } on FirebaseAuthException catch (e) {
         loading.value = false;
-        displayMessage(e.message!,context,"Error!!");
+        displayMessage(e.message!,context,"Error!!",(){});
         clearFields();
         Get.back();
     }
@@ -121,8 +148,85 @@ class AuthController extends GetxController{
       loading.value = false;
       clearFields();
     } on FirebaseAuthException catch (e) {
-        displayMessage(e.code,context,"Error!!");
+        displayMessage(e.code,context,"Error!!",(){});
         loading.value = false;
+    }
+  }
+  Future<void> resetPassword(BuildContext context) async {
+    loading.value = true;
+    try {
+      bool isEmailRegistered = await isEmailRegisteredFunction(email.text);
+      if (!isEmailRegistered) {
+        displayMessage("Email not found. Try to register instead", context, "Error",(){});
+        loading.value = false;
+      } else {
+        loading.value = false;
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: email.text);
+        Get.back();
+        displayMessage(
+          "Password reset successfully. Kindly check your email.", 
+          context,
+           "success", 
+           (){}
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      Get.back();
+      displayMessage(
+        e.message.toString(), 
+        context, 
+        "Error", 
+        (){}
+      );
+    } catch (e) {
+      Get.back();
+      displayMessage(
+        "An error occured while processing. Please try again later.", 
+        context, 
+        "Error", 
+        (){}
+      );
+    }
+  }
+  Future sendVerification() async {
+    seconds.value = 300;
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      await user!.sendEmailVerification();
+      timer = Timer.periodic(
+        const Duration(seconds: 1),
+        (timer) {
+          seconds.value -= 1;
+          if(seconds > 0){
+            checkVerified();
+          } else {
+            seconds.value = 0;
+            timer.cancel();
+            return;
+          }
+        }
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future checkVerified () async {
+    await FirebaseAuth.instance.currentUser!.reload();    
+    isverified.value = FirebaseAuth.instance.currentUser!.emailVerified;
+    if(isverified.value){
+      Get.to("/choose");
+    }
+  }
+  Future<bool> isEmailRegisteredFunction(String email) async {
+    try {
+      QuerySnapshot query = await FirebaseFirestore.instance
+      .collection('users')
+      .where('email', isEqualTo: email)
+      .get();
+      return query.docs.isNotEmpty;
+    } catch (e) {
+      return false;
     }
   }
 }

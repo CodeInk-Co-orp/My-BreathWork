@@ -222,7 +222,7 @@ class ChooseScreen extends StatelessWidget {
               CustomButton(
                 width: 250,
                 onPressed: (){
-
+                  Get.toNamed('/music');
                 },
                 text: 'Create',
               ),
