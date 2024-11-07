@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:my_breath_work/app/data/dummy.dart';
@@ -8,7 +11,8 @@ class ChooseController extends GetxController{
   RxInt voice = 1.obs;
   RxInt music = 1.obs;
   RxInt purpose = 1.obs;
-
+  RxBool loading = false.obs;
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   AudioPlayer audioPlayer = AudioPlayer();
 
   Future<void> togglePlayer({String? language}) async {
@@ -18,9 +22,50 @@ class ChooseController extends GetxController{
     await audioPlayer.play();
   }
 
+  Future<void> loadMusic(String asset) async {
+    ByteData byteData = await rootBundle.load(asset);
+    Uint8List bytes = byteData.buffer.asUint8List();
+    MyCustomSource choice = MyCustomSource(bytes);
+    await audioPlayer.setAudioSource(choice);
+    await audioPlayer.play();
+  }
+
+  Future<void> createBreathwork() async {
+    loading.value = true;
+    try{
+      await firebaseFirestore.collection('breathwork')
+      .add(
+        {
+          'user': FirebaseAuth.instance.currentUser!.email,
+          'voice': voices[voice.value]['name'],
+          'music': tracks[music.value]['label'],
+          'purpose': purposes[purpose.value]['label'],
+          'title': "Breathwork ${DateTime.now().millisecondsSinceEpoch}.mp3",
+        }
+      );
+      Get.toNamed('/my_breathwork');
+      loading.value = false;
+    } catch(e){
+      loading.value = false;
+      rethrow;
+    }
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> breathworkSnapshots(){
+    return firebaseFirestore.collection('breathwork').snapshots();
+  }
+
+  redirect(){
+    User? user = FirebaseAuth.instance.currentUser;
+    if(user == null){
+      // Get.offNamed('/login');
+    }
+  }
+
   @override
   void onInit() {
     togglePlayer();
+    redirect();
     super.onInit();
   }
 }

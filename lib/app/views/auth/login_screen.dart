@@ -95,40 +95,35 @@ class LoginScreen extends StatelessWidget {
                           )                          
                         ),
                       ),
-                      GestureDetector(
-                        onTap: (){
-                          Get.offNamed("/regester");
-                        },
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              const TextSpan(
-                                text: "New user? Click ",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: KColors.primaryLight
-                                ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: "New user? Click ",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: KColors.primaryLight
                               ),
-                              TextSpan(
-                                text: "here ",
-                                recognizer:TapGestureRecognizer()..onTap = () {
-                                  Get.offNamed("/regester");
-                                },
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: KColors.secondary,
-                                  fontWeight: FontWeight.bold
-                                )
-                              ),
-                              const TextSpan(
-                                text: " to create an account.",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: KColors.primaryLight
-                                )
-                              ),
-                            ]
-                          )
+                            ),
+                            TextSpan(
+                              text: "here ",
+                              recognizer:TapGestureRecognizer()..onTap = () {
+                                Get.offNamed("/regester");
+                              },
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: KColors.secondary,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                            const TextSpan(
+                              text: " to create an account.",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: KColors.primaryLight
+                              )
+                            ),
+                          ]
                         )
                       ),
                       const CustomSpacing(

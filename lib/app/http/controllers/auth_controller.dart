@@ -83,34 +83,39 @@ class AuthController extends GetxController{
     name.clear();
     language.clear();
   }
-
-  void signUp(BuildContext context) async {
-    loading.value = true;
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
+    
+    void signUp(BuildContext context) async {
+      loading.value = true;
+      try {
+        await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
             email: email.text, 
             password: password.text
+        ).then((value) async {
+          Get.offNamed("/verify");
+          await sendVerification();
+          await FirebaseFirestore.instance
+            .collection('users')
+            .doc(value.user!.email)
+            .set(
+              {
+                "name": name.text,
+                "email": email.text,
+                "language": language.text,
+                'checked': checked.value,
+                'user_id': value.user!.email,
+              }
+            );
+          }
         );
-      Get.offNamed("/verify");
-      await sendVerification();
-      await FirebaseFirestore.instance
-        .collection('users')
-        .add({
-          "name": name.text,
-          "email": email.text,
-          "language": language.text,
-          'checked': checked.value,
-          'user_id': userCredential.user!.uid,
-        }
-      );
-      clearFields();
-      loading.value = false;
-    } on FirebaseAuthException catch (e) {
-        loading.value = false;
-        displayMessage(e.message!,context,"Error!!");
         clearFields();
-        Get.back();
+        loading.value = false;
+        Get.offNamed("/choose", arguments: {'from': 'register'});
+      } on FirebaseAuthException catch (e) {
+          loading.value = false;
+          displayMessage(e.message!,context,"Error!!");
+          clearFields();
+          Get.back();
     }
   }
   
@@ -122,12 +127,12 @@ class AuthController extends GetxController{
         password: password.text
       );
       if (context.mounted) {
-        Get.offNamed("/choose");
+        Get.offNamed("/choose", arguments: {'from': 'login'});
       }
       loading.value = false;
       clearFields();
     } on FirebaseAuthException catch (e) {
-        displayMessage(e.code,context,"Error!!");
+        displayMessage(e.code,context, "Error!!");
         loading.value = false;
     }
   }

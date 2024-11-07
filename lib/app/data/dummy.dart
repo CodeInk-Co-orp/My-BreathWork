@@ -26,16 +26,34 @@ List<Map<String, dynamic>> voices = [
   },
 ];
 
-List<String> music = [
-  'Space',
-  'Hip Hop',
-  'Techno'
+List<Map<String, dynamic>> tracks = [
+  {
+    'label': 'Space',
+    'music': 'assets/music/sound/Space.mp3'
+  },
+  {
+    'label': 'Hip Hop',
+    'music': 'assets/music/sound/Hiphop.mp3'
+  },
+  {
+    'label': 'Techno',
+    'music': 'assets/music/sound/Techno.mp3'
+  }
 ];
 
-List<String> purpose = [
-  'Focus',
-  'Be Happy',
-  'Sleep Better'
+List<Map<String, dynamic>> purposes = [
+  {
+    'label': 'Focus',
+    'purpose': 'assets/music/purpose/Focus.mp3'
+  },
+  {
+    'label': 'Be Happy',
+    'purpose': 'assets/music/purpose/Be Happy.mp3'
+  },
+  {
+    'label': 'Sleep Better',
+    'purpose': 'assets/music/purpose/Sleepbetter.mp3'
+  }
 ];
 
 List<Map<String, dynamic>> dummyVoices = [
