@@ -40,6 +40,7 @@ class ChooseController extends GetxController{
           'voice': voices[voice.value]['name'],
           'music': tracks[music.value]['label'],
           'purpose': purposes[purpose.value]['label'],
+          'title': "Breathwork ${DateTime.now().millisecondsSinceEpoch}.mp3",
         }
       );
       Get.offNamed('/my_breathwork');

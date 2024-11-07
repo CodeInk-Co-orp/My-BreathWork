@@ -254,7 +254,7 @@ class ChooseScreen extends StatelessWidget {
                   CustomButton(
                     width: 250,
                     onPressed: (){
-          
+                      chooseController.createBreathwork();
                     },
                     text: 'Create',
                   ),
