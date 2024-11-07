@@ -259,50 +259,69 @@ class ChooseScreen extends StatelessWidget {
                     },
                     text: 'Create',
                   ),
-                  const CustomSpacing(height: .05),
-                  StreamBuilder(
-                    stream: chooseController.breathworkSnapshots(),
-                    builder: (context, snapshot){
-                      if(snapshot.hasData){
-                        if(snapshot.data!.docs.isEmpty){
-                          return Container();
-                        }
-                        List docs = snapshot.data!.docs.where(
-                          (doc) => doc['user'] == FirebaseAuth.instance.currentUser!.email
-                        ).toList();
-                        return SizedBox(
-                          width: 350,
-                          child: ListView.builder(
-                            itemCount: docs.length,
-                            shrinkWrap: true,
-                            physics: const ClampingScrollPhysics(),
-                            itemBuilder: (context, index) => ListTile(
-                              onTap: (){
-                                Get.toNamed('/my_breathwork');
-                              },
-                              tileColor: KColors.primaryDark.withOpacity(.75),
-                              leading: const CircleAvatar(
-                                radius: 20,
-                                backgroundColor: KColors.secondary,
-                                child: Icon(
-                                  Icons.mic,
-                                  color: KColors.primaryTransparent,
-                                  size: 30,
+                  Visibility(
+                    visible: Get.arguments != null ? Get.arguments['from'].toString() != 'try_free' : false,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const CustomSpacing(height: .05),
+                        StreamBuilder(
+                          stream: chooseController.breathworkSnapshots(),
+                          builder: (context, snapshot){
+                            if(snapshot.hasData){
+                              if(snapshot.data!.docs.isEmpty){
+                                return Container();
+                              }
+                              List docs = snapshot.data!.docs.where(
+                                (doc) => doc['user'] == FirebaseAuth.instance.currentUser!.email
+                              ).toList();
+                              return SizedBox(
+                                width: 350,
+                                child: ListView.builder(
+                                  itemCount: docs.length,
+                                  shrinkWrap: true,
+                                  physics: const ClampingScrollPhysics(),
+                                  itemBuilder: (context, index) => ListTile(
+                                    onTap: (){
+                                      Get.toNamed('/my_breathwork');
+                                    },
+                                    tileColor: KColors.primaryDark,
+                                    leading: const CircleAvatar(
+                                      radius: 20,
+                                      backgroundColor: KColors.secondary,
+                                      child: Icon(
+                                        Icons.mic,
+                                        color: KColors.primaryTransparent,
+                                        size: 30,
+                                      ),
+                                    ),
+                                    title: CustomText(
+                                      text: docs[index]['title'],
+                                      fontSize: 18,
+                                      textColor: KColors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    subtitle: CustomText(
+                                      text: "${docs[index]['voice']} - ${docs[index]['music']} - ${docs[index]['purpose']}",
+                                      fontSize: 15,
+                                      textColor: KColors.grey,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    trailing: const Icon(
+                                      Icons.delete,
+                                      color: KColors.secondaryDark,
+                                      size: 30,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              // title: CustomText(
-                              //   text: docs[index]['title'],
-                              //   fontSize: 18,
-                              //   textColor: KColors.white,
-                              //   fontWeight: FontWeight.bold,
-                              // )
-                            ),
-                          ),
-                        );
-                      } else {
-                        return Container();
-                      }
-                    }
+                              );
+                            } else {
+                              return Container();
+                            }
+                          }
+                        ),
+                      ],
+                    ),
                   ),
                   const CustomSpacing(height: .075),
                 ],

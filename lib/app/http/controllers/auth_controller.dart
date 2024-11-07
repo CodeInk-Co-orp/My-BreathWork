@@ -102,7 +102,7 @@ class AuthController extends GetxController{
       );
       clearFields();
       loading.value = false;
-      Get.offNamed("/choose");
+      Get.offNamed("/choose", arguments: {'from': 'register'});
     } on FirebaseAuthException catch (e) {
         loading.value = false;
         displayMessage(e.message!, "Error!!");
@@ -119,7 +119,7 @@ class AuthController extends GetxController{
         password: password.text
       );
       if (context.mounted) {
-        Get.offNamed("/choose");
+        Get.offNamed("/choose", arguments: {'from': 'login'});
       }
       loading.value = false;
       clearFields();

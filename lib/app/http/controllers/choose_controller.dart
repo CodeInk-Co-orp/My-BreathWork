@@ -55,9 +55,17 @@ class ChooseController extends GetxController{
     return firebaseFirestore.collection('breathwork').snapshots();
   }
 
+  redirect(){
+    User? user = FirebaseAuth.instance.currentUser;
+    if(user == null){
+      // Get.offNamed('/login');
+    }
+  }
+
   @override
   void onInit() {
     togglePlayer();
+    redirect();
     super.onInit();
   }
 }

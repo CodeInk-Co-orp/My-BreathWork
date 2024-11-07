@@ -117,9 +117,9 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () async {
                   bool isNotBlank = await isSet();
                   if(isNotBlank){
-                    Get.toNamed("/choose");
+                    Get.toNamed("/choose", arguments: {'from': 'try_free'});
                   } else {
-                    Get.toNamed("/try_free");
+                    Get.toNamed("/choose", arguments: {'from': 'try_free'});
                   }
                 },
                 text: "TRY FREE",

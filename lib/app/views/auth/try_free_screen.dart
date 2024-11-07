@@ -103,7 +103,7 @@ class TryFreeScreen extends StatelessWidget {
                             language: tryFreeController.languageController.text == 'Swedish' ? 'se' : 'en',
                             sayName: tryFreeController.sayName.value
                           );
-                          Get.toNamed('/choose');
+                          Get.toNamed("/choose", arguments: {'from': 'try_free'});
                         }
                       },
                       text: "Let's Go",
