@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_breath_work/app/data/dummy.dart';
 import 'package:my_breath_work/app/http/controllers/breathwork_controller.dart';
+import 'package:my_breath_work/app/services/logging.dart';
 import 'package:my_breath_work/app/widgets/background.dart';
 import 'package:my_breath_work/app/widgets/home_row.dart';
 import 'package:my_breath_work/app/widgets/space.dart';
@@ -224,7 +226,16 @@ class BreathworkScreen extends StatelessWidget {
           );
           } else {
             Map<String, dynamic>? data = snapshot.data!.data();
-            breathworkController.loadMusic('assets/music/speech/amelia english.wav');
+            breathworkController.readMusic(
+              'music/speech/amelia_english.wav',
+              tracks.where(
+                (track) => track['label'] == data!['music'],
+              ).first['music'],
+              purposes.where(
+                (purpose) => purpose['label'] == data!['purpose'],
+              ).first['purpose'],
+              'assets/music/Space_[music_background_audio_file].mp3'
+            );
             return SingleChildScrollView(
             child: Obx(
               () => Column(
@@ -250,7 +261,9 @@ class BreathworkScreen extends StatelessWidget {
                     ),
                   ),
                   Slider(
-                    value: breathworkController.sliderValue.value, 
+                    value: breathworkController.sliderValue.value,
+                    max: 1.0,
+                    min: 0.0,
                     onChanged: (value){
                       breathworkController.sliderValue.value = value;
                     }
@@ -264,7 +277,7 @@ class BreathworkScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomText(
-                          text: "00.00", 
+                          text: '00:00', 
                           fontSize: 15, 
                           textColor: KColors.white
                         ),
@@ -295,10 +308,24 @@ class BreathworkScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 12,),
                       Obx(
-                        () => Icon(
-                          breathworkController.playing.value ? CupertinoIcons.pause : CupertinoIcons.play_circle_fill,
-                          color: KColors.white,
-                          size: 35,
+                        () => GestureDetector(
+                          onTap: (){
+                            if(!breathworkController.playing.value && !breathworkController.started.value){
+                              Logging.print("Playing...");
+                              breathworkController.play();
+                            } else if(!breathworkController.playing.value){
+                              Logging.print("Resuming...");
+                              breathworkController.resume();
+                            } else {
+                              Logging.print("Pausing...");
+                              breathworkController.pause();
+                            }
+                          },
+                          child: Icon(
+                            breathworkController.playing.value ? CupertinoIcons.pause : CupertinoIcons.play_circle_fill,
+                            color: KColors.white,
+                            size: 35,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 12,),
@@ -318,8 +345,8 @@ class BreathworkScreen extends StatelessWidget {
                       children: [
                         Slider(
                           value: breathworkController.volume.value,
-                          max: 10,
-                          min: 0,
+                          max: 1.0,
+                          min: 0.0,
                           onChanged: (value){
                             breathworkController.volume.value = value;
                           }
@@ -375,9 +402,10 @@ class BreathworkScreen extends StatelessWidget {
                             value: breathworkController.mix1.value,
                             onChanged: (value) {
                               breathworkController.mix1.value = value;
+                              breathworkController.mix1Player.setVolume(breathworkController.mix1.value);
                             },
-                            max: 10,
-                            min: 0,
+                            max: 1.0,
+                            min: 0.0,
                           ),
                         ),
                       ),
@@ -389,9 +417,10 @@ class BreathworkScreen extends StatelessWidget {
                             value: breathworkController.mix2.value,
                             onChanged: (value) {
                               breathworkController.mix2.value = value;
+                              breathworkController.mix2Player.setVolume(breathworkController.mix2.value);
                             },
-                            max: 10,
-                            min: 0,
+                            max: 1.0,
+                            min: 0.0,
                           ),
                         ),
                       ),
@@ -403,9 +432,10 @@ class BreathworkScreen extends StatelessWidget {
                             value: breathworkController.mix3.value,
                             onChanged: (value) {
                               breathworkController.mix3.value = value;
+                              breathworkController.mix3Player.setVolume(breathworkController.mix3.value);
                             },
-                            max: 10,
-                            min: 0,
+                            max: 1.0,
+                            min: 0.0,
                           ),
                         ),
                       ),
@@ -417,9 +447,10 @@ class BreathworkScreen extends StatelessWidget {
                             value: breathworkController.mix4.value,
                             onChanged: (value) {
                               breathworkController.mix4.value = value;
+                              breathworkController.audioPlayer.setVolume(breathworkController.mix4.value);
                             },
-                            max: 10,
-                            min: 0,
+                            max: 1.0,
+                            min: 0.0,
                           ),
                         ),
                       ),
