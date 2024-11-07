@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,7 @@ class BreathworkScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BackgroundScreen(
-      body: StreamBuilder<Object>(
+      body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: breathworkController.dataStream(Get.arguments['breathwork_id']),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -222,6 +223,8 @@ class BreathworkScreen extends StatelessWidget {
             ),
           );
           } else {
+            Map<String, dynamic>? data = snapshot.data!.data();
+            breathworkController.loadMusic('assets/music/speech/amelia english.wav');
             return SingleChildScrollView(
             child: Obx(
               () => Column(
@@ -273,8 +276,8 @@ class BreathworkScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const CustomText(
-                    text: "Be happy - space by Elle ", 
+                  CustomText(
+                    text: data!['title'], 
                     fontSize: 20, 
                     textColor: KColors.white,
                     fontWeight: FontWeight.w800,
@@ -282,22 +285,24 @@ class BreathworkScreen extends StatelessWidget {
                   SizedBox(
                     height: verticalSpace(context, 0.02),
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.skip_next_sharp,
                         color: KColors.white,
                         size: 35,
                       ),
-                      SizedBox(width: 12,),
-                      Icon(
-                        CupertinoIcons.play_circle_fill,
-                        color: KColors.white,
-                        size: 35,
+                      const SizedBox(width: 12,),
+                      Obx(
+                        () => Icon(
+                          breathworkController.playing.value ? CupertinoIcons.pause : CupertinoIcons.play_circle_fill,
+                          color: KColors.white,
+                          size: 35,
+                        ),
                       ),
-                      SizedBox(width: 12,),
-                      Icon(
+                      const SizedBox(width: 12,),
+                      const Icon(
                         Icons.skip_next_sharp,
                         color: KColors.white,
                         size: 35,
