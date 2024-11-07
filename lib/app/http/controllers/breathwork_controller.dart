@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -16,6 +18,7 @@ class BreathworkController extends GetxController{
   RxBool playing = false.obs;
   RxBool started = false.obs;
   MyCustomSource? choice;
+  Timer? timer;
 
   Stream<DocumentSnapshot<Map<String, dynamic>>> dataStream(String id){
     return firebaseFirestore.collection('breathwork').doc(id).snapshots();
@@ -47,6 +50,15 @@ class BreathworkController extends GetxController{
     mix3Player.play();
     playing.value = true;
     started.value = true;
+    count();
+  }
+
+  void count(){
+    if(sliderValue.value < 660){
+      timer = Timer.periodic(const Duration(milliseconds: 250), (timer){
+        sliderValue.value += .25;
+      });
+    }
   }
 
   Future<void> pause() async {
@@ -55,6 +67,7 @@ class BreathworkController extends GetxController{
     mix2Player.pause();
     mix3Player.pause();
     playing.value = false;
+    timer!.cancel();
   }
 
   Future<void> resume() async {
@@ -63,5 +76,6 @@ class BreathworkController extends GetxController{
     mix2Player.play();
     mix3Player.play();
     playing.value = true;
+    count();
   }
 }

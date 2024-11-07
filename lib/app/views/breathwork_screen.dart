@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_breath_work/app/data/dummy.dart';
 import 'package:my_breath_work/app/http/controllers/breathwork_controller.dart';
-import 'package:my_breath_work/app/services/logging.dart';
 import 'package:my_breath_work/app/widgets/background.dart';
 import 'package:my_breath_work/app/widgets/home_row.dart';
 import 'package:my_breath_work/app/widgets/space.dart';
@@ -262,14 +261,14 @@ class BreathworkScreen extends StatelessWidget {
                   ),
                   Slider(
                     value: breathworkController.sliderValue.value,
-                    max: 1.0,
+                    max: 660,
                     min: 0.0,
                     onChanged: (value){
                       breathworkController.sliderValue.value = value;
                     }
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(
+                  Padding(
+                    padding: const EdgeInsets.only(
                       left: 16,
                       right: 16
                     ),
@@ -277,12 +276,12 @@ class BreathworkScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomText(
-                          text: '00:00', 
+                          text: "${Duration(seconds: breathworkController.sliderValue.toInt()).inMinutes}:${Duration(seconds: breathworkController.sliderValue.toInt()).inSeconds % 60}",
                           fontSize: 15, 
                           textColor: KColors.white
                         ),
                         CustomText(
-                          text: "04.39", 
+                          text: breathworkController.audioPlayer.duration.toString() != 'null' ? "${breathworkController.audioPlayer.duration!.inMinutes}:00" : "11:00", 
                           fontSize: 15, 
                           textColor: KColors.white
                         ),
@@ -311,13 +310,10 @@ class BreathworkScreen extends StatelessWidget {
                         () => GestureDetector(
                           onTap: (){
                             if(!breathworkController.playing.value && !breathworkController.started.value){
-                              Logging.print("Playing...");
                               breathworkController.play();
                             } else if(!breathworkController.playing.value){
-                              Logging.print("Resuming...");
                               breathworkController.resume();
                             } else {
-                              Logging.print("Pausing...");
                               breathworkController.pause();
                             }
                           },
