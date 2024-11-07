@@ -42,7 +42,7 @@ class MusicScreen extends StatelessWidget {
             ),
             Slider(
               value: musicController.sliderValue.value, 
-              onChanged: (value){
+                onChanged: (value){
               }
             ),
             const Padding(

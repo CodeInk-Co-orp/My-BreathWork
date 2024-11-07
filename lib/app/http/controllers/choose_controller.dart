@@ -42,8 +42,14 @@ class ChooseController extends GetxController{
           'purpose': purposes[purpose.value]['label'],
           'title': "Breathwork ${DateTime.now().millisecondsSinceEpoch}.mp3",
         }
-      );
-      Get.toNamed('/my_breathwork');
+      ).then((value){
+        Get.toNamed(
+          '/my_breathwork',
+          arguments: {
+            'breathwork_id': value.id,
+          }
+        );
+      });
       loading.value = false;
     } catch(e){
       Get.snackbar("Failed!!!", e.toString());

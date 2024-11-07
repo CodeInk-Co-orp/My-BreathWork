@@ -283,7 +283,12 @@ class ChooseScreen extends StatelessWidget {
                                   physics: const ClampingScrollPhysics(),
                                   itemBuilder: (context, index) => ListTile(
                                     onTap: (){
-                                      Get.toNamed('/my_breathwork');
+                                      Get.toNamed(
+                                        '/my_breathwork',
+                                        arguments: {
+                                          'breathwork_id': docs[index].id,
+                                        }
+                                      );
                                     },
                                     tileColor: KColors.primaryDark,
                                     leading: const CircleAvatar(
