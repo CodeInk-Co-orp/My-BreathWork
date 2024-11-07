@@ -19,10 +19,9 @@ class AuthController extends GetxController{
     checked.value = !checked.value;
   }
   
-  void displayMessage(String message,BuildContext context, String title){
-    showDialog(
-      context: context, 
-      builder: (context) => AlertDialog(
+  void displayMessage(String message, String title){
+    Get.dialog(
+      AlertDialog(
         title: CustomText(
           text: title, 
           fontSize: 20, 
@@ -82,19 +81,23 @@ class AuthController extends GetxController{
   void signUp(BuildContext context) async {
     loading.value = true;
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
+      await FirebaseAuth.instance
         .createUserWithEmailAndPassword(
-            email: email.text, 
-            password: password.text
-        );
-      await FirebaseFirestore.instance
-        .collection('users')
-        .add({
-          "name": name.text,
-          "email": email.text,
-          "language": language.text,
-          'checked': checked.value,
-          'user_id': userCredential.user!.uid,
+          email: email.text, 
+          password: password.text
+      ).then((value) async {
+        await FirebaseFirestore.instance
+          .collection('users')
+          .doc(value.user!.email)
+          .set(
+            {
+              "name": name.text,
+              "email": email.text,
+              "language": language.text,
+              'checked': checked.value,
+              'user_id': value.user!.email,
+            }
+          );
         }
       );
       clearFields();
@@ -102,7 +105,7 @@ class AuthController extends GetxController{
       Get.offNamed("/choose");
     } on FirebaseAuthException catch (e) {
         loading.value = false;
-        displayMessage(e.message!,context,"Error!!");
+        displayMessage(e.message!, "Error!!");
         clearFields();
         Get.back();
     }
@@ -121,7 +124,7 @@ class AuthController extends GetxController{
       loading.value = false;
       clearFields();
     } on FirebaseAuthException catch (e) {
-        displayMessage(e.code,context,"Error!!");
+        displayMessage(e.code, "Error!!");
         loading.value = false;
     }
   }
