@@ -15,19 +15,19 @@ Future<void> sendRequest(String input, int user) async {
         'text': input,
         'voice_settings': {
           'stability': 1,
-          'similarity_boost': 0.9 
-        }
+          'similarity_boost': 0.9
+        },
       }),
       headers: {
         'xi-api-key': 'cbb45823b2c4ddce4ffe0eeef3f5dd99',
         'Content-Type': 'application/json'
-      }
+      },
     ).then(
       (value) {
         Logging.print(value.bodyBytes.length);
         myCustomSource = MyCustomSource(value.bodyBytes);
         return value.bodyBytes.toList();
-      }
+      },
     );
   } on FormatException catch(e){
     Logging.print("Error: ${e.message}");

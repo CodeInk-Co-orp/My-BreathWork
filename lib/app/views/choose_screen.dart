@@ -53,29 +53,34 @@ class ChooseScreen extends StatelessWidget {
                           items: [
                             ...List.generate(
                               voices.length,
-                              (index) => Column(
-                                children: [
-                                  Obx(
-                                    () => 
-                                    Transform(
-                                      transform: Matrix4.skewY(index != chooseController.voice.value ? .2 : 0),
-                                      child: Container(
-                                        height: verticalSpace(context, .35),
-                                        color: Colors.black.withOpacity(index == chooseController.voice.value ? 0 : .2),
-                                        child: Image(
-                                          image: AssetImage('assets/images/${voices[index]['image']}.png'),
-                                          fit: BoxFit.cover,
+                              (index) => GestureDetector(
+                                onTap: (){
+                                  chooseController.togglePlayer();
+                                },
+                                child: Column(
+                                  children: [
+                                    Obx(
+                                      () => 
+                                      Transform(
+                                        transform: Matrix4.skewY(index != chooseController.voice.value ? .2 : 0),
+                                        child: Container(
+                                          height: verticalSpace(context, .35),
+                                          color: Colors.black.withOpacity(index == chooseController.voice.value ? 0 : .2),
+                                          child: Image(
+                                            image: AssetImage('assets/images/${voices[index]['image']}.png'),
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  const CustomSpacing(height: .02),
-                                  CustomText(
-                                    text: voices[index]['name'],
-                                    fontSize: 20,
-                                    textColor: KColors.white,
-                                  ),
-                                ],
+                                    const CustomSpacing(height: .02),
+                                    CustomText(
+                                      text: voices[index]['name'],
+                                      fontSize: 20,
+                                      textColor: KColors.white,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -117,22 +122,27 @@ class ChooseScreen extends StatelessWidget {
                         music.length,
                         (index) => Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Obx(
-                            () => Container(
-                              height: 30,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: index == chooseController.music.value ? KColors.primary : KColors.secondary,
-                              ),
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                  child: CustomText(
-                                    text: music[index],
-                                    fontSize: 16,
-                                    textColor: Colors.white,
-                                    centerText: true,
-                                    fontWeight: FontWeight.bold,
+                          child: GestureDetector(
+                            onTap: (){
+                              chooseController.loadMusic(music[chooseController.music.value]['music']);
+                            },
+                            child: Obx(
+                              () => Container(
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: index == chooseController.music.value ? KColors.primary : KColors.secondary,
+                                ),
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                    child: CustomText(
+                                      text: music[index]['label'],
+                                      fontSize: 16,
+                                      textColor: Colors.white,
+                                      centerText: true,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -149,6 +159,7 @@ class ChooseScreen extends StatelessWidget {
                       enlargeCenterPage: true,
                       onPageChanged: (index, reason){
                         chooseController.music.value = index;
+                        chooseController.loadMusic(music[chooseController.music.value]['music']);
                       },
                       enableInfiniteScroll: false,
                     ),
@@ -174,22 +185,27 @@ class ChooseScreen extends StatelessWidget {
                         purpose.length,
                         (index) => Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Obx(
-                            () => Container(
-                              height: 30,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: index == chooseController.purpose.value ? KColors.primary : KColors.secondary,
-                              ),
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                  child: CustomText(
-                                    text: purpose[index],
-                                    fontSize: 16,
-                                    textColor: Colors.white,
-                                    centerText: true,
-                                    fontWeight: FontWeight.bold,
+                          child: GestureDetector(
+                            onTap: (){
+                              chooseController.loadMusic(purpose[chooseController.purpose.value]['purpose']);
+                            },
+                            child: Obx(
+                              () => Container(
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: index == chooseController.purpose.value ? KColors.primary : KColors.secondary,
+                                ),
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                    child: CustomText(
+                                      text: purpose[index]['label'],
+                                      fontSize: 16,
+                                      textColor: Colors.white,
+                                      centerText: true,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -206,6 +222,7 @@ class ChooseScreen extends StatelessWidget {
                       enlargeCenterPage: true,
                       onPageChanged: (index, reason){
                         chooseController.purpose.value = index;
+                        chooseController.loadMusic(purpose[chooseController.purpose.value]['purpose']);
                       },
                       enableInfiniteScroll: false,
                     ),

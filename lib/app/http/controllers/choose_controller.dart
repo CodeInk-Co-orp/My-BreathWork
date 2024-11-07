@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:my_breath_work/app/data/dummy.dart';
@@ -15,6 +18,14 @@ class ChooseController extends GetxController{
     String text = await replaceData(dummyVoices[voice.value]);
     await sendRequest(text, voice.value);
     await audioPlayer.setAudioSource(myCustomSource!);
+    await audioPlayer.play();
+  }
+
+  Future<void> loadMusic(String asset) async {
+    ByteData byteData = await rootBundle.load(asset);
+    Uint8List bytes = byteData.buffer.asUint8List();
+    MyCustomSource choice = MyCustomSource(bytes);
+    await audioPlayer.setAudioSource(choice);
     await audioPlayer.play();
   }
 
