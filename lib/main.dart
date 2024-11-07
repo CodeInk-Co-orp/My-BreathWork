@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_breath_work/app/views/auth/login_screen.dart';
-import 'package:my_breath_work/app/views/auth/regester_screen.dart';
+import 'package:my_breath_work/app/views/auth/register_screen.dart';
 import 'package:my_breath_work/app/views/auth/try_free_screen.dart';
 import 'package:my_breath_work/app/views/choose_screen.dart';
 import 'package:my_breath_work/app/views/home_screen.dart';

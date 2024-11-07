@@ -4,13 +4,15 @@ import 'package:my_breath_work/app/widgets/text.dart';
 import 'package:my_breath_work/util/colors.dart';
 
 class LanguageDropdown extends StatelessWidget {
-  const LanguageDropdown({super.key, required this.controller});
+  const LanguageDropdown({super.key, required this.controller, this.enabled});
+  final bool? enabled;
   final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<String>(
       controller: controller,
+      enabled: enabled ?? true,
       enableSearch: false,
       label: const Row(
         children: [

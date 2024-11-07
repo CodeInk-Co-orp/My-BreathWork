@@ -53,76 +53,79 @@ class RegesterScreen extends StatelessWidget {
                   ),
                   child: Form(
                     key: authController.regestKey,
-                    child: Column(
-                      children: [
-                        Obx(()=> Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: CustomTextInput(
-                            controller: authController.name, 
-                            validator: (value){
-                              return value!.isEmpty ? "Enter your name to proceed" : null;
-                            }, 
-                            enable: authController.loading.value ? false:true,
-                            textInputType: TextInputType.name,
-                            textCapitalization: TextCapitalization.words, 
-                            hintText: "Name", 
+                    child: Obx(
+                      () => Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: CustomTextInput(
+                              controller: authController.name, 
+                              validator: (value){
+                                return value!.isEmpty ? "Enter your name to proceed" : null;
+                              }, 
+                              enable: !authController.loading.value,
+                              textInputType: TextInputType.name,
+                              textCapitalization: TextCapitalization.words, 
+                              hintText: "Name", 
+                            ),
                           ),
+                          Opacity(
+                            opacity: authController.loading.value ? .4 : 1,
+                            child: LanguageDropdown(controller: authController.language, enabled: !authController.loading.value)
                           ),
-                        ),
-                        LanguageDropdown(controller: authController.language),
-                        Obx(()=> Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: CustomTextInput(
-                            controller: authController.email,
-                            validator: (value){
-                              return !value!.isEmail ? "Invalid e-mail address" : null;
-                            }, 
-                            enable: authController.loading.value ? false:true,
-                            textInputType: TextInputType.emailAddress, 
-                            hintText: "E-mail", 
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: CustomTextInput(
+                              controller: authController.email,
+                              validator: (value){
+                                return !value!.isEmail ? "Invalid e-mail address" : null;
+                              }, 
+                              enable: !authController.loading.value,
+                              textInputType: TextInputType.emailAddress, 
+                              hintText: "E-mail", 
+                            ),
                           ),
-                         ),
-                        ),
-                        Obx(()=> Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: CustomTextInput(
-                            controller: authController.password, 
-                            validator: (value){
-                              return value!.isEmpty || value.length < 8 ? "Enter valid email of min of 8 characters" : null;
-                            }, 
-                            enable: authController.loading.value ? false:true,
-                            textInputType: TextInputType.emailAddress, 
-                            hintText: "Password"
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: CustomTextInput(
+                              controller: authController.password, 
+                              validator: (value){
+                                return value!.isEmpty || value.length < 8 ? "Enter valid email of min of 8 characters" : null;
+                              }, 
+                              enable: !authController.loading.value,
+                              textInputType: TextInputType.emailAddress, 
+                              hintText: "Password"
+                            ),
                           ),
-                        ),),
-                        RichText(text: 
-                           TextSpan(
-                            children: [
-                              const TextSpan(
-                                text: "Already registered?",
-                                style: TextStyle(
-                                  color: KColors.primaryLight,
-                                  fontSize: 15
-                                )
-                              ),
-                              TextSpan(
-                                text: " Log in.",
-                                recognizer: TapGestureRecognizer()..onTap=(){
-                                  Get.offNamed("/login");
-                                },
-                                 style: const TextStyle(
-                                  color: KColors.secondary,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold
+                          RichText(text: 
+                             TextSpan(
+                              children: [
+                                const TextSpan(
+                                  text: "Already registered?",
+                                  style: TextStyle(
+                                    color: KColors.primaryLight,
+                                    fontSize: 15
+                                  )
                                 ),
-                              ),
-                            ]
-                          )
-                        ),
-                        const CustomSpacing(
-                          height: 0.02,
-                        ),
-                      ],
+                                TextSpan(
+                                  text: " Log in.",
+                                  recognizer: TapGestureRecognizer()..onTap=(){
+                                    Get.offNamed("/login");
+                                  },
+                                   style: const TextStyle(
+                                    color: KColors.secondary,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ]
+                            )
+                          ),
+                          const CustomSpacing(
+                            height: 0.02,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -158,13 +161,14 @@ class RegesterScreen extends StatelessWidget {
                       ],
                     ),
                     const CustomSpacing(height: .05),
-                    Obx(()=>CustomButton(
+                    Obx(
+                      ()=> CustomButton(
                       onPressed: (){
-                        if(authController.regestKey.currentState!.validate() && authController.checked.value == true){
+                        if(authController.regestKey.currentState!.validate()){
                           authController.signUp(context);
                         }
                       },
-                      text: authController.loading.value ? " Loading..." : "Lets Go"
+                        text: authController.loading.value ? " Loading..." : "Lets Go"
                       ),
                     ),
                   ],
