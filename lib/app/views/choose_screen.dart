@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_breath_work/app/data/dummy.dart';
@@ -257,6 +258,51 @@ class ChooseScreen extends StatelessWidget {
                       chooseController.createBreathwork();
                     },
                     text: 'Create',
+                  ),
+                  const CustomSpacing(height: .05),
+                  StreamBuilder(
+                    stream: chooseController.breathworkSnapshots(),
+                    builder: (context, snapshot){
+                      if(snapshot.hasData){
+                        if(snapshot.data!.docs.isEmpty){
+                          return Container();
+                        }
+                        List docs = snapshot.data!.docs.where(
+                          (doc) => doc['user'] == FirebaseAuth.instance.currentUser!.email
+                        ).toList();
+                        return SizedBox(
+                          width: 350,
+                          child: ListView.builder(
+                            itemCount: docs.length,
+                            shrinkWrap: true,
+                            physics: const ClampingScrollPhysics(),
+                            itemBuilder: (context, index) => ListTile(
+                              onTap: (){
+                                Get.toNamed('/my_breathwork');
+                              },
+                              tileColor: KColors.primaryDark.withOpacity(.75),
+                              leading: const CircleAvatar(
+                                radius: 20,
+                                backgroundColor: KColors.secondary,
+                                child: Icon(
+                                  Icons.mic,
+                                  color: KColors.primaryTransparent,
+                                  size: 30,
+                                ),
+                              ),
+                              // title: CustomText(
+                              //   text: docs[index]['title'],
+                              //   fontSize: 18,
+                              //   textColor: KColors.white,
+                              //   fontWeight: FontWeight.bold,
+                              // )
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    }
                   ),
                   const CustomSpacing(height: .075),
                 ],

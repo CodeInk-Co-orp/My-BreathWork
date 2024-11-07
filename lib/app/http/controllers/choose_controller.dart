@@ -43,12 +43,16 @@ class ChooseController extends GetxController{
           'title': "Breathwork ${DateTime.now().millisecondsSinceEpoch}.mp3",
         }
       );
-      Get.offNamed('/my_breathwork');
+      Get.toNamed('/my_breathwork');
       loading.value = false;
     } catch(e){
       loading.value = false;
       rethrow;
     }
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> breathworkSnapshots(){
+    return firebaseFirestore.collection('breathwork').snapshots();
   }
 
   @override
