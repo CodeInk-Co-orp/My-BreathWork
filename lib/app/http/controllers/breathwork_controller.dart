@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:my_breath_work/app/services/local_storage.dart';
+import 'package:my_breath_work/app/services/logging.dart';
 
 import '../providers/text_to_speech_provider.dart';
 
@@ -43,7 +44,11 @@ class BreathworkController extends GetxController{
     await mix1Player.setAudioSource(AudioSource.asset(mix1));
     await mix2Player.setAudioSource(AudioSource.asset(mix2));
     await mix3Player.setAudioSource(AudioSource.asset(mix3));
+  }
+
+  Future<void> setId() async {
     previousBreathwork = await fetchId();
+    Logging.print(previousBreathwork);
   }
 
   Future<void> play() async {
@@ -80,5 +85,11 @@ class BreathworkController extends GetxController{
     mix3Player.play();
     playing.value = true;
     count();
+  }
+
+  @override
+  void onInit() {
+    setId();
+    super.onInit();
   }
 }
