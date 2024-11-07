@@ -79,7 +79,7 @@ class LoginScreen extends StatelessWidget {
                       ),                      
                       GestureDetector(
                         onTap: (){
-                          Get.offNamed("/regester");
+                          Get.offNamed("/register");
                         },
                         child: RichText(
                           text: TextSpan(
@@ -94,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                               TextSpan(
                                 text: "here ",
                                 recognizer:TapGestureRecognizer()..onTap = () {
-                                  Get.offNamed("/regester");
+                                  Get.offNamed("/register");
                                 },
                                 style: const TextStyle(
                                   fontSize: 15,

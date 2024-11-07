@@ -26,7 +26,7 @@ List<Map<String, dynamic>> voices = [
   },
 ];
 
-List<Map<String, dynamic>> music = [
+List<Map<String, dynamic>> tracks = [
   {
     'label': 'Space',
     'music': 'assets/music/sound/Space.mp3'
@@ -41,7 +41,7 @@ List<Map<String, dynamic>> music = [
   }
 ];
 
-List<Map<String, dynamic>> purpose = [
+List<Map<String, dynamic>> purposes = [
   {
     'label': 'Focus',
     'purpose': 'assets/music/purpose/Focus.mp3'

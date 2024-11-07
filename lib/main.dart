@@ -25,7 +25,7 @@ void main() async {
         "/try_free": (context) => TryFreeScreen(),
         "/login": (context) =>  LoginScreen(),
         "/choose": (context) => ChooseScreen(),
-        "/regester": (context) =>  RegesterScreen(),
+        "/register": (context) =>  RegesterScreen(),
         "/music" : (context) => MusicScreen(),
       },
     ),
