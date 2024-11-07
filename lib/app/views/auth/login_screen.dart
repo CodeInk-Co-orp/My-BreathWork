@@ -76,7 +76,25 @@ class LoginScreen extends StatelessWidget {
                           hintText: "Password"
                         ),
                        ),
-                      ),                      
+                      ), 
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Obx(()=>GestureDetector(
+                            onTap: (){
+                              authController.resetPassword(context);
+                            },
+                            child: CustomText(
+                              text: authController.reset.value ? "Loading..." : "Forgot passsword?", 
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              textColor: KColors.secondary,
+                            ),
+                           ),
+                          )                          
+                        ),
+                      ),
                       GestureDetector(
                         onTap: (){
                           Get.offNamed("/regester");

@@ -15,6 +15,7 @@ class AuthController extends GetxController{
   final regestKey = GlobalKey<FormState>();
   RxBool checked = false.obs;
   final loading = false.obs;
+  final reset = false.obs;
   late final isverified = false.obs;
   RxInt seconds = 0.obs;
   Timer? timer;
@@ -23,7 +24,7 @@ class AuthController extends GetxController{
     checked.value = !checked.value;
   }
   
-  void displayMessage(String message,BuildContext context, String title, void Function()? onTap){
+   displayMessage(String message,BuildContext context, String title,){
     showDialog(
       context: context, 
       builder: (context) => AlertDialog(
@@ -45,47 +46,24 @@ class AuthController extends GetxController{
           ],
         ),
         actions: [
-          Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: KColors.primary,
-                    borderRadius: BorderRadius.circular(8)
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CustomText(
-                      text: "OK", 
-                      fontSize: 18, 
-                      textColor: KColors.white
-                    ),
-                  ),
+          GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: KColors.primary,
+                borderRadius: BorderRadius.circular(8)
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: CustomText(
+                  text: "OK", 
+                  fontSize: 18, 
+                  textColor: KColors.white
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: KColors.primary,
-                    borderRadius: BorderRadius.circular(8)
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CustomText(
-                      text: "OK", 
-                      fontSize: 18, 
-                      textColor: KColors.white
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           )
         ],
       )
@@ -114,6 +92,8 @@ class AuthController extends GetxController{
             email: email.text, 
             password: password.text
         );
+      Get.offNamed("/verify");
+      await sendVerification();
       await FirebaseFirestore.instance
         .collection('users')
         .add({
@@ -126,10 +106,9 @@ class AuthController extends GetxController{
       );
       clearFields();
       loading.value = false;
-      Get.offNamed("/choose");
     } on FirebaseAuthException catch (e) {
         loading.value = false;
-        displayMessage(e.message!,context,"Error!!",(){});
+        displayMessage(e.message!,context,"Error!!");
         clearFields();
         Get.back();
     }
@@ -148,26 +127,37 @@ class AuthController extends GetxController{
       loading.value = false;
       clearFields();
     } on FirebaseAuthException catch (e) {
-        displayMessage(e.code,context,"Error!!",(){});
+        displayMessage(e.code,context,"Error!!");
         loading.value = false;
     }
   }
+  
   Future<void> resetPassword(BuildContext context) async {
-    loading.value = true;
-    try {
+    reset.value = true;
+   try {
       bool isEmailRegistered = await isEmailRegisteredFunction(email.text);
-      if (!isEmailRegistered) {
-        displayMessage("Email not found. Try to register instead", context, "Error",(){});
-        loading.value = false;
+      if (email.text == "") {
+        displayMessage(
+          "Enter email to reset password", 
+          context, "Error"
+        );
+        reset.value = false;
+      }
+      else if(!isEmailRegistered) {
+        displayMessage(
+          "Email not found. Try to register instead", 
+          context, 
+          "Error"
+        );
+        reset.value = false;
       } else {
-        loading.value = false;
+        reset.value = false;
         await FirebaseAuth.instance.sendPasswordResetEmail(email: email.text);
         Get.back();
         displayMessage(
           "Password reset successfully. Kindly check your email.", 
           context,
-           "success", 
-           (){}
+          "success",
         );
       }
     } on FirebaseAuthException catch (e) {
@@ -175,19 +165,18 @@ class AuthController extends GetxController{
       displayMessage(
         e.message.toString(), 
         context, 
-        "Error", 
-        (){}
+        "Error",
       );
     } catch (e) {
       Get.back();
       displayMessage(
         "An error occured while processing. Please try again later.", 
         context, 
-        "Error", 
-        (){}
+        "Error",
       );
     }
   }
+  
   Future sendVerification() async {
     seconds.value = 300;
     try {
@@ -215,9 +204,13 @@ class AuthController extends GetxController{
     await FirebaseAuth.instance.currentUser!.reload();    
     isverified.value = FirebaseAuth.instance.currentUser!.emailVerified;
     if(isverified.value){
-      Get.to("/choose");
+      timer?.cancel();
+      Get.offNamed("/choose");
     }
   }
+  
+  
+  
   Future<bool> isEmailRegisteredFunction(String email) async {
     try {
       QuerySnapshot query = await FirebaseFirestore.instance
@@ -229,4 +222,10 @@ class AuthController extends GetxController{
       return false;
     }
   }
+  
+  String formatTime(int secs) {
+  DateTime time = DateTime(0, 0, 0, 0, 0, secs);
+  String formatted = "${time.minute} min(s) ${time.second} second(s)";
+  return formatted;
+}
 }

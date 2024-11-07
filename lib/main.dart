@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_breath_work/app/views/auth/check_login_status.dart';
 import 'package:my_breath_work/app/views/auth/login_screen.dart';
 import 'package:my_breath_work/app/views/auth/regester_screen.dart';
 import 'package:my_breath_work/app/views/auth/try_free_screen.dart';
+import 'package:my_breath_work/app/views/auth/verify_email.dart';
 import 'package:my_breath_work/app/views/choose_screen.dart';
 import 'package:my_breath_work/app/views/home_screen.dart';
 import 'package:my_breath_work/app/views/music_screen.dart';
@@ -21,12 +23,14 @@ void main() async {
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
       routes: {
-        "/": (context) => HomeScreen(),
+        "/": (context) => CheckLoginStatus(),
+        "/home": (context) => HomeScreen(),
         "/try_free": (context) => TryFreeScreen(),
         "/login": (context) =>  LoginScreen(),
         "/choose": (context) => ChooseScreen(),
         "/regester": (context) =>  RegesterScreen(),
         "/music" : (context) => MusicScreen(),
+        "/verify" : (context) => VerifyEmail(),
       },
     ),
   );
