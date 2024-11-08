@@ -1,0 +1,1 @@
+{"detail":{"status":"quota_exceeded","message":"This request exceeds your quota. You have 36 credits remaining, while 112 credits are required for this request.","character_used":29969,"character_limit":30005}}

@@ -21,11 +21,8 @@ class ChooseController extends GetxController{
     try{
       String text = await replaceData(dummyVoices[voice.value]);
       await sendRequest(text, voice.value);
-      Logging.print("03...");
       await voiceAudioPlayer.setAudioSource(myCustomSource!);
-      Logging.print("04...");
       await voiceAudioPlayer.play();
-      Logging.print("05...");
     } catch(e){
       Logging.print("Error: $e");
       // rethrow;

@@ -18,7 +18,8 @@ Future<void> sendRequest(String input, int user) async {
         },
       }),
       headers: {
-        'xi-api-key': 'cbb45823b2c4ddce4ffe0eeef3f5dd99',
+        'xi-api-key': 'sk_551afec91d9a8017066146f6c2bca1da1ea3ff4a23cb611d',
+        // 'xi-api-key': 'cbb45823b2c4ddce4ffe0eeef3f5dd99',
         'Content-Type': 'application/json'
       },
     ).then(
