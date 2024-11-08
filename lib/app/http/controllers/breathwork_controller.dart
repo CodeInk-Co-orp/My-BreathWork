@@ -66,6 +66,8 @@ class BreathworkController extends GetxController{
       timer = Timer.periodic(const Duration(milliseconds: 250), (timer){
         sliderValue.value += .25;
       });
+    } else {
+      timer!.cancel();
     }
   }
 
