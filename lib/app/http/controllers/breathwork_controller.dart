@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:my_breath_work/app/services/local_storage.dart';
 import 'package:my_breath_work/app/services/logging.dart';
-
 import '../providers/text_to_speech_provider.dart';
 
 class BreathworkController extends GetxController{
@@ -89,6 +88,24 @@ class BreathworkController extends GetxController{
     count();
   }
 
+   Future<List<Map<String, dynamic>>> fetchAudioFiles() async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('audio').get();
+      return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    } catch (e) {
+      print("Error fetching audio files: $e");
+      return [];
+    }
+  }
+
+  Future<void> playAudio(String url) async {
+    try {
+      await audioPlayer.setUrl(url);
+      audioPlayer.play();
+    } catch (e) {
+      print("Error playing audio: $e");
+    }
+  }
   @override
   void onInit() {
     setId();

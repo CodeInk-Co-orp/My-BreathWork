@@ -47,28 +47,28 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC7LJ4eonkIP64qX6oTCAJ7UpGUd7uoQnQ',
-    appId: '1:305474624030:web:1b3f954b8566307b47ec0f',
-    messagingSenderId: '305474624030',
-    projectId: 'mybreathwork-77f50',
-    authDomain: 'mybreathwork-77f50.firebaseapp.com',
-    storageBucket: 'mybreathwork-77f50.appspot.com',
+    apiKey: 'AIzaSyD88OUkbibc7rc0dI-zDJOEm0el-tRjIZs',
+    appId: '1:14643166336:web:879dd9908af858b1797a65',
+    messagingSenderId: '14643166336',
+    projectId: 'mybreathwork-a7a56',
+    authDomain: 'mybreathwork-a7a56.firebaseapp.com',
+    storageBucket: 'mybreathwork-a7a56.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDf-y4-XGlvJhTOlISw1mZxSeECX3szSJg',
-    appId: '1:305474624030:android:6ffe5e853c72e70947ec0f',
-    messagingSenderId: '305474624030',
-    projectId: 'mybreathwork-77f50',
-    storageBucket: 'mybreathwork-77f50.appspot.com',
+    apiKey: 'AIzaSyBXsigPeV78Pd_YzLBFgW_q2eBo9W_kLGI',
+    appId: '1:14643166336:android:9576477088bebf85797a65',
+    messagingSenderId: '14643166336',
+    projectId: 'mybreathwork-a7a56',
+    storageBucket: 'mybreathwork-a7a56.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBCfF_Wgj8zYH_bZPSMd3YyFHQFN4fEo2M',
-    appId: '1:305474624030:ios:532f2bee1ebfb59f47ec0f',
-    messagingSenderId: '305474624030',
-    projectId: 'mybreathwork-77f50',
-    storageBucket: 'mybreathwork-77f50.appspot.com',
+    apiKey: 'AIzaSyAi9oJNr4Ra9NHBzpJvNdF3rJRuTJ_3oLg',
+    appId: '1:14643166336:ios:bcc7585f2b4ab0be797a65',
+    messagingSenderId: '14643166336',
+    projectId: 'mybreathwork-a7a56',
+    storageBucket: 'mybreathwork-a7a56.firebasestorage.app',
     iosBundleId: 'com.example.myBreathWork',
   );
 }

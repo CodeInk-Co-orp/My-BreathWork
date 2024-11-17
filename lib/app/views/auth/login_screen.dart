@@ -80,7 +80,7 @@ class LoginScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Obx(()=>GestureDetector(
                             onTap: (){
                               authController.resetPassword(context);

@@ -19,7 +19,7 @@ class VerifyEmail extends StatelessWidget {
         borderRadius: BorderRadius.circular(8)
       ),
       child:  Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,

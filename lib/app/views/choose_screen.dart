@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_breath_work/app/data/dummy.dart';
 import 'package:my_breath_work/app/http/controllers/choose_controller.dart';
+import 'package:my_breath_work/app/http/controllers/storage_controller.dart';
 import 'package:my_breath_work/app/services/local_storage.dart';
 import 'package:my_breath_work/app/widgets/background.dart';
 import 'package:my_breath_work/app/widgets/button.dart';
@@ -17,6 +18,7 @@ import 'package:carousel_slider/carousel_slider.dart' as cs;
 class ChooseScreen extends StatelessWidget {
   ChooseScreen({super.key});
   final ChooseController chooseController = Get.put(ChooseController());
+  final StorageController storageControler = Get.put(StorageController());
 
   @override
   Widget build(BuildContext context) {
@@ -257,6 +259,7 @@ class ChooseScreen extends StatelessWidget {
                     width: 250,
                     onPressed: (){
                       chooseController.createBreathwork();
+                      // storageControler.uploadAudio(category: "speech");
                     },
                     text: 'Create',
                   ),
