@@ -1,32 +1,42 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_breath_work/app/data/dummy.dart';
 import 'package:my_breath_work/app/http/controllers/breathwork_controller.dart';
 import 'package:my_breath_work/app/widgets/background.dart';
 import 'package:my_breath_work/app/widgets/home_row.dart';
 import 'package:my_breath_work/app/widgets/space.dart';
 import 'package:my_breath_work/app/widgets/text.dart';
 import 'package:my_breath_work/util/colors.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class BreathworkScreen extends StatelessWidget {
   final BreathworkController breathworkController = Get.put(BreathworkController());
   BreathworkScreen({super.key});
-
+  final currentUser = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return BackgroundScreen(
-      body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: breathworkController.dataStream(
-          Get.arguments != null ? Get.arguments['breathwork_id'] : breathworkController.previousBreathwork,
-        ),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('audio').snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Skeletonizer(
-            child: SingleChildScrollView(
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
+          if (snapshot.hasData) {
+            final audioList = snapshot.data!.docs;
+            if (audioList.isEmpty) {
+              return const Center(child: Text("No audio data found."));
+            }
+            final audio = audioList[3].data();
+            final audio1 = audioList[0].data();
+            final audio2 = audioList[1].data();
+            final audio3 = audioList[2].data();
+            return SingleChildScrollView(
               child: Column(
                 children: [
                   Container(
@@ -34,9 +44,7 @@ class BreathworkScreen extends StatelessWidget {
                     width: double.infinity,
                     decoration: BoxDecoration(
                       image: const DecorationImage(
-                        image: AssetImage(
-                          "assets/audio_image.jpg",
-                        ),
+                        image: AssetImage("assets/audio_image.jpg"),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: BorderRadius.circular(5),
@@ -49,255 +57,43 @@ class BreathworkScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Slider(
-                    value: breathworkController.sliderValue.value, 
-                      onChanged: (value){
-                    }
+                  Obx(() => Slider(
+                      value: breathworkController.sliderValue.value,
+                      max: breathworkController.duration.value,
+                      min: 0.0,
+                      onChanged: (value) {
+                       breathworkController.seek(value);
+                      },
+                    )
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(
-                      left: 16,
-                      right: 16
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(
-                          text: "00.00", 
-                          fontSize: 15, 
-                          textColor: KColors.white
-                        ),
-                        CustomText(
-                          text: "04.39", 
-                          fontSize: 15, 
-                          textColor: KColors.white
-                        ),
-                      ],
-                    ),
-                  ),
-                  const CustomText(
-                    text: "Be happy - space by Elle ", 
-                    fontSize: 20, 
-                    textColor: KColors.white,
-                    fontWeight: FontWeight.w800,
-                  ),
-                  SizedBox(
-                    height: verticalSpace(context, 0.02),
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.skip_next_sharp,
-                        color: KColors.white,
-                        size: 35,
-                      ),
-                      SizedBox(width: 12,),
-                      Icon(
-                        CupertinoIcons.play_circle_fill,
-                        color: KColors.white,
-                        size: 35,
-                      ),
-                      SizedBox(width: 12,),
-                      Icon(
-                        Icons.skip_next_sharp,
-                        color: KColors.white,
-                        size: 35,
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: horizontalSpace(context, 0.03)
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Slider(
-                          value: breathworkController.volume.value,
-                          max: 10,
-                          min: 0,
-                          onChanged: (value){
-                          }
-                        ),
-                        const Icon(
-                          Icons.volume_up_sharp,
-                          color: KColors.white,
-                          size: 28,
-                        )
-                      ],
-                    ),
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CircleAvatar(
-                        child: Icon(
-                          Icons.music_note_sharp,
-                          size: 28,
-                        ),
-                      ),
-                      CircleAvatar(
-                        child: Icon(
-                          Icons.mic_external_on_outlined,
-                          size: 28,
-                        ),
-                      ),
-                      CircleAvatar(
-                        child: Icon(
-                          CupertinoIcons.speaker,
-                          size: 28,
-                        ),
-                      ),
-                      CircleAvatar(
-                        child: Icon(
-                          Icons.record_voice_over_sharp,
-                          size: 28,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: verticalSpace(context, 0.03),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center, 
-                      children: [
-                        Transform.rotate(
-                          angle: -pi /2,
-                          child: SizedBox(
-                            width: 110,
-                            child: Slider(
-                              value: breathworkController.mix1.value,
-                              onChanged: (value) {
-                              },
-                              max: 10,
-                              min: 0,
-                            ),
+                  Obx(() {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                            text: formatDuration(breathworkController.sliderValue.value),
+                            fontSize: 15,
+                            textColor: KColors.white,
                           ),
-                        ),
-                        Transform.rotate(
-                          angle: -pi / 2,
-                          child: SizedBox(
-                            width: 110,
-                            child: Slider(
-                              value: breathworkController.mix2.value,
-                              onChanged: (value) {
-                              },
-                              max: 10,
-                              min: 0,
-                            ),
+                          CustomText(
+                            text: formatDuration(breathworkController.duration.value),
+                            fontSize: 15,
+                            textColor: KColors.white,
                           ),
-                        ),
-                        Transform.rotate(
-                          angle: -pi / 2,
-                          child: SizedBox(
-                            width: 110,
-                            child: Slider(
-                              value: breathworkController.mix3.value,
-                              onChanged: (value) {
-                              },
-                              max: 10,
-                              min: 0,
-                            ),
-                          ),
-                        ),
-                        Transform.rotate(
-                          angle: -pi / 2,
-                          child: SizedBox(
-                            width: 110,
-                            child: Slider(
-                              value: breathworkController.mix4.value,
-                              onChanged: (value) {
-                              },
-                              max: 10,
-                              min: 0,
-                             ),
-                            ),
-                        ),
-                     ],
-                  ),
-                  SizedBox(
-                    height: verticalSpace(context, 0.03),
-                  ),
-                ],
-              ),
-            ),
-          );
-          } else {
-            Map<String, dynamic>? data = snapshot.data!.data();
-            breathworkController.readMusic(
-              'music/speech/amelia_english.wav',
-              tracks.where(
-                (track) => track['label'] == data!['music'],
-              ).first['music'],
-              purposes.where(
-                (purpose) => purpose['label'] == data!['purpose'],
-              ).first['purpose'],
-              'assets/music/Space_[music_background_audio_file].mp3'
-            );
-            return SingleChildScrollView(
-            child: Obx(
-              () => Column(
-                children: [
-                  Container(
-                    height: verticalSpace(context, 0.3),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      image: const DecorationImage(
-                        image: AssetImage(
-                          "assets/audio_image.jpg",
-                        ),
-                        fit: BoxFit.cover,
+                        ],
                       ),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: const Align(
-                      alignment: Alignment.topCenter,
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: HomeRow(),
-                      ),
-                    ),
+                    );
+                   }
                   ),
-                  Slider(
-                    value: breathworkController.sliderValue.value,
-                    max: 660,
-                    min: 0.0,
-                    onChanged: (value){
-                      breathworkController.sliderValue.value = value;
-                    }
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 16,
-                      right: 16
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(
-                          text: "${Duration(seconds: breathworkController.sliderValue.toInt()).inMinutes}:${Duration(seconds: breathworkController.sliderValue.toInt()).inSeconds % 60}",
-                          fontSize: 15, 
-                          textColor: KColors.white
-                        ),
-                        CustomText(
-                          text: breathworkController.audioPlayer.duration.toString() != 'null' ? "${breathworkController.audioPlayer.duration!.inMinutes}:00" : "11:00", 
-                          fontSize: 15, 
-                          textColor: KColors.white
-                        ),
-                      ],
-                    ),
-                  ),
+                  SizedBox(height: verticalSpace(context, 0.02)),
                   CustomText(
-                    text: data!['title'], 
-                    fontSize: 20, 
+                    text: audio['name'], 
+                    fontSize: 15,
                     textColor: KColors.white,
-                    fontWeight: FontWeight.w800,
                   ),
-                  SizedBox(
-                    height: verticalSpace(context, 0.02),
-                  ),
+                  SizedBox(height: verticalSpace(context, 0.02)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -306,26 +102,37 @@ class BreathworkScreen extends StatelessWidget {
                         color: KColors.white,
                         size: 35,
                       ),
-                      const SizedBox(width: 12,),
+                      const SizedBox(width: 12),
                       Obx(
                         () => GestureDetector(
-                          onTap: (){
-                            if(!breathworkController.playing.value && !breathworkController.started.value){
-                              breathworkController.play();
-                            } else if(!breathworkController.playing.value){
-                              breathworkController.resume();
-                            } else {
-                              breathworkController.pause();
-                            }
+                          onTap: () async{
+                            if (!breathworkController.isPlaying.value && !breathworkController.started.value) {
+                            final audio1 = audioList[0].data();
+                            await breathworkController.play(audio['url'],audio1['url'],audio2['url'],audio3['url']);
+                            await breathworkController.mix1Player.play();
+                            breathworkController.mix1Player.setVolume(breathworkController.mix1.value);
+                            // Update states
+                            breathworkController.isPlaying.value = true;
+                            breathworkController.started.value = true;
+                          } else if (!breathworkController.isPlaying.value) {
+                            // Resume both audios if paused
+                            await breathworkController.resume();
+                          } else {
+                            // Pause both audios if playing
+                            await breathworkController.pause();
+                          }
+                            // breathworkController.play(audio['url'],audio1['url'],audio2['url'],audio3['url']);
                           },
                           child: Icon(
-                            breathworkController.playing.value ? CupertinoIcons.pause : CupertinoIcons.play_circle_fill,
+                            breathworkController.isPlaying.value
+                                ? CupertinoIcons.pause
+                                : CupertinoIcons.play_circle_fill,
                             color: KColors.white,
                             size: 35,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12,),
+                      const SizedBox(width: 12),
                       const Icon(
                         Icons.skip_next_sharp,
                         color: KColors.white,
@@ -334,25 +141,26 @@ class BreathworkScreen extends StatelessWidget {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: horizontalSpace(context, 0.03)
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: horizontalSpace(context, 0.03)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Slider(
-                          value: breathworkController.volume.value,
-                          max: 1.0,
-                          min: 0.0,
+                       Obx(()=> Slider(
+                          value: breathworkController.audioPlayer.volume,
+                          max: breathworkController.volume.value,
+                          min: 0,
                           onChanged: (value){
-                            breathworkController.volume.value = value;
+                            breathworkController.mix1.value = value;
+                            breathworkController.mix2.value = value;
+                            breathworkController.mix3.value = value;
                           }
+                        ),
                         ),
                         const Icon(
                           Icons.volume_up_sharp,
                           color: KColors.white,
                           size: 28,
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -385,84 +193,89 @@ class BreathworkScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: verticalSpace(context, 0.03),
-                  ),
+                  SizedBox(height: verticalSpace(context, 0.03)),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center, 
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Transform.rotate(
-                        angle: -pi /2,
+                        angle: -pi / 2,
                         child: SizedBox(
                           width: 110,
-                          child: Slider(
+                          child: Obx(()=>Slider(
                             value: breathworkController.mix1.value,
                             onChanged: (value) {
                               breathworkController.mix1.value = value;
                               breathworkController.mix1Player.setVolume(breathworkController.mix1.value);
                             },
-                            max: 1.0,
+                            max: breathworkController.duration1.value,
                             min: 0.0,
-                          ),
+                           ),
+                          )                          
                         ),
                       ),
                       Transform.rotate(
                         angle: -pi / 2,
                         child: SizedBox(
                           width: 110,
-                          child: Slider(
-                            value: breathworkController.mix2.value,
+                          child: Obx(()=>Slider(
+                            value: breathworkController.mix1.value,
                             onChanged: (value) {
-                              breathworkController.mix2.value = value;
-                              breathworkController.mix2Player.setVolume(breathworkController.mix2.value);
+                              breathworkController.mix1.value = value;
+                              breathworkController.mix1Player.setVolume(breathworkController.mix2.value);
                             },
-                            max: 1.0,
+                            max: breathworkController.duration2.value,
                             min: 0.0,
-                          ),
+                           ),
+                          )
                         ),
                       ),
                       Transform.rotate(
                         angle: -pi / 2,
                         child: SizedBox(
                           width: 110,
-                          child: Slider(
-                            value: breathworkController.mix3.value,
+                          child: Obx(()=>Slider(
+                            value: breathworkController.mix1.value,
                             onChanged: (value) {
-                              breathworkController.mix3.value = value;
-                              breathworkController.mix3Player.setVolume(breathworkController.mix3.value);
+                              breathworkController.mix1.value = value;
+                              breathworkController.mix1Player.setVolume(breathworkController.mix3.value);
                             },
-                            max: 1.0,
+                            max: breathworkController.duration3.value,
                             min: 0.0,
                           ),
+                         )
                         ),
                       ),
                       Transform.rotate(
                         angle: -pi / 2,
                         child: SizedBox(
                           width: 110,
-                          child: Slider(
-                            value: breathworkController.mix4.value,
+                          child: Obx(()=>Slider(
+                            value: breathworkController.mix1.value,
                             onChanged: (value) {
-                              breathworkController.mix4.value = value;
-                              breathworkController.audioPlayer.setVolume(breathworkController.mix4.value);
+                              breathworkController.mix1.value = value;
+                              breathworkController.mix1Player.setVolume(breathworkController.mix4.value);
                             },
-                            max: 1.0,
+                            max: breathworkController.duration3.value,
                             min: 0.0,
                           ),
+                          )
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: verticalSpace(context, 0.03),
-                  ),
+                  SizedBox(height: verticalSpace(context, 0.03)),
                 ],
               ),
-            ),
-          );
+            );
           }
-        }
-      ),
-    );
+          return const Center(child: CircularProgressIndicator());
+         },
+        )
+      );
+    }
+    String formatDuration(double seconds) {
+      final minutes = (seconds / 60).floor();
+      final remainingSeconds = (seconds % 60).toInt();
+      return "${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}";
+    }
   }
-}

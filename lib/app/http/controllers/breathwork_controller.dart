@@ -10,17 +10,24 @@ import '../providers/text_to_speech_provider.dart';
 
 class BreathworkController extends GetxController{
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  RxDouble sliderValue = 0.0.obs;  
-  RxDouble volume = .7.obs; 
   RxDouble mix1 = .7.obs; 
   RxDouble mix2 = .7.obs; 
   RxDouble mix3 = .7.obs; 
   RxDouble mix4 = .7.obs;
-  RxBool playing = false.obs;
   RxBool started = false.obs;
   MyCustomSource? choice;
   Timer? timer;
   String? previousBreathwork;
+  RxBool isPlaying = false.obs;
+  var sliderValue = 0.0.obs; 
+  var duration = 0.0.obs;
+  var duration1 = 0.0.obs;
+  var duration2 = 0.0.obs;
+  var duration3 = 0.0.obs;
+  var duration4 = 0.0.obs;
+  var volume = 5.0.obs;
+  var audioFiles = <Map<String, dynamic>>[].obs; 
+  var isLoading = false.obs; 
 
   Stream<DocumentSnapshot<Map<String, dynamic>>> dataStream(String id){
     return firebaseFirestore.collection('breathwork').doc(id).snapshots();
@@ -50,13 +57,19 @@ class BreathworkController extends GetxController{
     Logging.print(previousBreathwork);
   }
 
-  Future<void> play() async {
+  Future<void> play(String url,String url1,String url2,String url3) async {
     audioPlayer.play();
     mix1Player.play();
     mix2Player.play();
     mix3Player.play();
-    playing.value = true;
+    mix1Player.setLoopMode(LoopMode.all);
+    audioPlayer.setLoopMode(LoopMode.all);
+    mix1Player.setLoopMode(LoopMode.all);
+    mix2Player.setLoopMode(LoopMode.all);
+    mix3Player.setLoopMode(LoopMode.all);
+    isPlaying.value = true;
     started.value = true;
+    audioplay(url, url1, url2, url3);
     count();
   }
 
@@ -71,41 +84,99 @@ class BreathworkController extends GetxController{
   }
 
   Future<void> pause() async {
-    audioPlayer.pause();
-    mix1Player.pause();
-    mix2Player.pause();
-    mix3Player.pause();
-    playing.value = false;
+    await audioPlayer.pause();
+    await mix1Player.pause();
+    await mix2Player.pause();
+    await mix3Player.pause();
+    isPlaying.value = false;
     timer!.cancel();
   }
 
   Future<void> resume() async {
-    audioPlayer.play();
-    mix1Player.play();
-    mix2Player.play();
-    mix3Player.play();
-    playing.value = true;
+    await audioPlayer.play();
+    await mix1Player.play();
+    await mix2Player.play();
+    await mix3Player.play();
+    isPlaying.value = true;
     count();
   }
-
-   Future<List<Map<String, dynamic>>> fetchAudioFiles() async {
-    try {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('audio').get();
-      return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-    } catch (e) {
-      print("Error fetching audio files: $e");
-      return [];
+  
+ void audioplay(String url,String url1,String url2,String url3) async {
+   await audioPlayer.setUrl(url);
+   await mix1Player.setUrl(url1);
+   await mix2Player.setUrl(url2);
+   await mix3Player.setUrl(url3);
+    audioPlayer.durationStream.listen((audioDuration) {
+        if (audioDuration != null) {
+          duration.value = audioDuration.inSeconds.toDouble();
+        }
+      }      
+    );
+    mix1Player.durationStream.listen((audioDuration) {
+        if (audioDuration != null) {
+          duration1.value = audioDuration.inSeconds.toDouble(); 
+        }
+      }      
+    );  
+    mix2Player.durationStream.listen((audioDuration) {
+        if (audioDuration != null) {
+          duration2.value = audioDuration.inSeconds.toDouble(); 
+        }
+      }      
+    );    
+    mix3Player.durationStream.listen((audioDuration) {
+        if (audioDuration != null) {
+          duration3.value = audioDuration.inSeconds.toDouble(); 
+        }
+      }      
+    );
+    mix4Player.durationStream.listen((audioDuration) {
+        if (audioDuration != null) {
+          duration4.value = audioDuration.inSeconds.toDouble(); 
+        }
+      }      
+    );
+    await audioPlayer.play();
+    await mix1Player.play();
+    await mix2Player.play();
+    await mix3Player.play();
+    await mix4Player.play();
+    isPlaying.value = true;
+    audioPlayer.positionStream.listen((position) {
+      sliderValue.value = position.inSeconds.toDouble();
     }
-  }
-
-  Future<void> playAudio(String url) async {
-    try {
-      await audioPlayer.setUrl(url);
-      audioPlayer.play();
-    } catch (e) {
-      print("Error playing audio: $e");
+  );
+    mix1Player.positionStream.listen((position) {
+        mix1.value = position.inSeconds.toDouble();
+      }
+    );
+    mix2Player.positionStream.listen((position) {
+        mix2.value = position.inSeconds.toDouble();
+      }
+    );
+    mix3Player.positionStream.listen((position) {
+        mix3.value = position.inSeconds.toDouble();
+      }
+    );
+    mix4Player.positionStream.listen((position) {
+        mix4.value = position.inSeconds.toDouble();
+      }
+    );
+}
+  void seek(double value) {
+    if (value <= duration.value) {
+      audioPlayer.seek(Duration(seconds: value.toInt()));
+      mix1Player.seek(Duration(seconds: value.toInt()));
+      mix2Player.seek(Duration(seconds: value.toInt()));
+      mix3Player.seek(Duration(seconds: value.toInt()));
+      mix4Player.seek(Duration(seconds: value.toInt()));
+      sliderValue.value = value;
+      mix1.value = value;
+      mix2.value = value;
+      mix3.value = value;
+      mix4.value = value;
     }
-  }
+}
   @override
   void onInit() {
     setId();
