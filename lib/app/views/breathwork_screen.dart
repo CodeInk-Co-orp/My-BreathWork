@@ -107,10 +107,7 @@ class BreathworkScreen extends StatelessWidget {
                         () => GestureDetector(
                           onTap: () async{
                             if (!breathworkController.isPlaying.value && !breathworkController.started.value) {
-                            final audio1 = audioList[0].data();
                             await breathworkController.play(audio['url'],audio1['url'],audio2['url'],audio3['url']);
-                            await breathworkController.mix1Player.play();
-                            breathworkController.mix1Player.setVolume(breathworkController.mix1.value);
                             breathworkController.isPlaying.value = true;
                             breathworkController.started.value = true;
                           } else if (!breathworkController.isPlaying.value) {
