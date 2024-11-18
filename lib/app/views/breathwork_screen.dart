@@ -15,6 +15,7 @@ class BreathworkScreen extends StatelessWidget {
   final BreathworkController breathworkController = Get.put(BreathworkController());
   BreathworkScreen({super.key});
   final currentUser = FirebaseAuth.instance.currentUser!;
+
   @override
   Widget build(BuildContext context) {
     return BackgroundScreen(
@@ -32,10 +33,11 @@ class BreathworkScreen extends StatelessWidget {
             if (audioList.isEmpty) {
               return const Center(child: Text("No audio data found."));
             }
-            final audio = audioList[3].data();
             final audio1 = audioList[0].data();
             final audio2 = audioList[1].data();
             final audio3 = audioList[2].data();
+            final audio = audioList[3].data();
+
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -58,17 +60,18 @@ class BreathworkScreen extends StatelessWidget {
                     ),
                   ),
                   Obx(() => Slider(
-                      value: breathworkController.sliderValue.value,
-                      max: breathworkController.duration.value,
-                      min: 0.0,
-                      onChanged: (value) {
-                       breathworkController.seek(value);
-                      },
-                    )
-                  ),
+                    value: breathworkController.sliderValue.value,
+                    max: breathworkController.duration.value,
+                    min: 0.0,
+                    onChanged: (value) {
+                      breathworkController.seek(value);
+                    },
+                  )
+                ),
+                  
                   Obx(() {
                     return Padding(
-                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -85,11 +88,11 @@ class BreathworkScreen extends StatelessWidget {
                         ],
                       ),
                     );
-                   }
+                  }
                   ),
                   SizedBox(height: verticalSpace(context, 0.02)),
                   CustomText(
-                    text: audio['name'], 
+                    text: audio['name'],
                     fontSize: 15,
                     textColor: KColors.white,
                   ),
@@ -98,58 +101,56 @@ class BreathworkScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(
-                        Icons.skip_next_sharp,
+                        Icons.skip_previous,
                         color: KColors.white,
                         size: 35,
                       ),
                       const SizedBox(width: 12),
                       Obx(
                         () => GestureDetector(
-                          onTap: () async{
+                          onTap: () async {
                             if (!breathworkController.isPlaying.value && !breathworkController.started.value) {
-                            await breathworkController.play(audio['url'],audio1['url'],audio2['url'],audio3['url']);
-                            breathworkController.isPlaying.value = true;
-                            breathworkController.started.value = true;
-                          } else if (!breathworkController.isPlaying.value) {
-                            await breathworkController.resume();
-                          } else {
-                            await breathworkController.pause();
-                          }
-                            // breathworkController.play(audio['url'],audio1['url'],audio2['url'],audio3['url']);
+                              await breathworkController.play(audio['url'], audio1['url'], audio2['url'], audio3['url']);
+                              breathworkController.started.value = true;
+                              breathworkController.isPlaying.value = true;
+                            } else if (!breathworkController.isPlaying.value) {
+                              await breathworkController.resume();
+                            } else {
+                              await breathworkController.pause();
+                            }
                           },
                           child: Icon(
                             breathworkController.isPlaying.value
-                                ? CupertinoIcons.pause
-                                : CupertinoIcons.play_circle_fill,
+                              ? CupertinoIcons.pause
+                              : CupertinoIcons.play_circle_fill,
                             color: KColors.white,
                             size: 35,
                           ),
                         ),
-                      ), 
+                      ),
                       const SizedBox(width: 12),
                       const Icon(
-                        Icons.skip_next_sharp,
+                        Icons.skip_next,
                         color: KColors.white,
                         size: 35,
                       ),
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: horizontalSpace(context, 0.03)),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                       Obx(()=> Slider(
-                          value: breathworkController.audioPlayer.volume,
-                          max: breathworkController.volume.value,
-                          min: 0,
-                          onChanged: (value){
-                            breathworkController.mix1.value = value;
-                            breathworkController.mix2.value = value;
-                            breathworkController.mix3.value = value;
-                          }
-                        ),
-                        ),
+                        Obx(() => Expanded(
+                          child: Slider(
+                            value: breathworkController.audioPlayer.volume,
+                            max: 1.0,
+                            min: 0.0,
+                            onChanged: (value) {
+                              breathworkController.audioPlayer.setVolume(value);
+                            },
+                          ),
+                        )
+                          ),
                         const Icon(
                           Icons.volume_up_sharp,
                           color: KColors.white,
@@ -158,104 +159,40 @@ class BreathworkScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CircleAvatar(
-                        child: Icon(
-                          Icons.music_note_sharp,
-                          size: 28,
-                        ),
-                      ),
-                      CircleAvatar(
-                        child: Icon(
-                          Icons.mic_external_on_outlined,
-                          size: 28,
-                        ),
-                      ),
-                      CircleAvatar(
-                        child: Icon(
-                          CupertinoIcons.speaker,
-                          size: 28,
-                        ),
-                      ),
-                      CircleAvatar(
-                        child: Icon(
-                          Icons.record_voice_over_sharp,
-                          size: 28,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: verticalSpace(context, 0.03)),
+                  const SizedBox(height: 16),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Transform.rotate(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List.generate(4, (index) {
+                      final player = [
+                        breathworkController.mix1Player,
+                        breathworkController.mix2Player,
+                        breathworkController.mix3Player,
+                        breathworkController.mix4Player
+                      ][index];
+                      final mixValue = [
+                        breathworkController.mix1,
+                        breathworkController.mix2,
+                        breathworkController.mix3,
+                        breathworkController.mix4
+                      ][index];
+                      return Transform.rotate(
                         angle: -pi / 2,
                         child: SizedBox(
                           width: 110,
-                          child: Obx(()=>Slider(
-                            value: breathworkController.mix1.value,
+                          child: Obx(() => Slider(
+                            value: mixValue.value,
                             onChanged: (value) {
-                              breathworkController.mix1.value = value;
-                              breathworkController.mix1Player.setVolume(breathworkController.mix1.value);
+                              mixValue.value = value;
+                              player.setVolume(value);
                             },
-                            max: breathworkController.duration1.value,
+                            max: 1.0,
                             min: 0.0,
-                           ),
-                          )                          
-                        ),
-                      ),
-                      Transform.rotate(
-                        angle: -pi / 2,
-                        child: SizedBox(
-                          width: 110,
-                          child: Obx(()=>Slider(
-                            value: breathworkController.mix1.value,
-                            onChanged: (value) {
-                              breathworkController.mix1.value = value;
-                              breathworkController.mix1Player.setVolume(breathworkController.mix2.value);
-                            },
-                            max: breathworkController.duration2.value,
-                            min: 0.0,
-                           ),
                           )
                         ),
                       ),
-                      Transform.rotate(
-                        angle: -pi / 2,
-                        child: SizedBox(
-                          width: 110,
-                          child: Obx(()=>Slider(
-                            value: breathworkController.mix1.value,
-                            onChanged: (value) {
-                              breathworkController.mix1.value = value;
-                              breathworkController.mix1Player.setVolume(breathworkController.mix3.value);
-                            },
-                            max: breathworkController.duration3.value,
-                            min: 0.0,
-                          ),
-                         )
-                        ),
-                      ),
-                      Transform.rotate(
-                        angle: -pi / 2,
-                        child: SizedBox(
-                          width: 110,
-                          child: Obx(()=>Slider(
-                            value: breathworkController.mix1.value,
-                            onChanged: (value) {
-                              breathworkController.mix1.value = value;
-                              breathworkController.mix1Player.setVolume(breathworkController.mix4.value);
-                            },
-                            max: breathworkController.duration3.value,
-                            min: 0.0,
-                          ),
-                          )
-                        ),
-                      ),
-                    ],
+                      );
+                    }
+                   ),
                   ),
                   SizedBox(height: verticalSpace(context, 0.03)),
                 ],
@@ -263,13 +200,13 @@ class BreathworkScreen extends StatelessWidget {
             );
           }
           return const Center(child: CircularProgressIndicator());
-         },
-        )
-      );
-    }
-    String formatDuration(double seconds) {
-      final minutes = (seconds / 60).floor();
-      final remainingSeconds = (seconds % 60).toInt();
-      return "${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}";
-    }
+        },
+      ),
+    );
   }
+  String formatDuration(double seconds) {
+    final minutes = (seconds / 60).floor();
+    final remainingSeconds = (seconds % 60).toInt();
+    return "${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}";
+  }
+}

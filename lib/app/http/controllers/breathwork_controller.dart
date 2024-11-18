@@ -25,7 +25,7 @@ class BreathworkController extends GetxController{
   var duration2 = 0.0.obs;
   var duration3 = 0.0.obs;
   var duration4 = 0.0.obs;
-  var volume = 5.0.obs;
+  var volume = 0.0.obs;
   var audioFiles = <Map<String, dynamic>>[].obs; 
   var isLoading = false.obs; 
 
@@ -62,11 +62,12 @@ class BreathworkController extends GetxController{
     mix1Player.play();
     mix2Player.play();
     mix3Player.play();
-    mix1Player.setLoopMode(LoopMode.all);
-    audioPlayer.setLoopMode(LoopMode.all);
-    mix1Player.setLoopMode(LoopMode.all);
-    mix2Player.setLoopMode(LoopMode.all);
-    mix3Player.setLoopMode(LoopMode.all);
+    mix4Player.play();
+    // mix1Player.setLoopMode(LoopMode.all);
+    // audioPlayer.setLoopMode(LoopMode.all);
+    // mix1Player.setLoopMode(LoopMode.all);
+    // mix2Player.setLoopMode(LoopMode.all);
+    // mix3Player.setLoopMode(LoopMode.all);
     isPlaying.value = true;
     started.value = true;
     audioplay(url, url1, url2, url3);
@@ -88,6 +89,7 @@ class BreathworkController extends GetxController{
     await mix1Player.pause();
     await mix2Player.pause();
     await mix3Player.pause();
+    await mix4Player.pause();
     isPlaying.value = false;
     timer!.cancel();
   }
@@ -97,6 +99,7 @@ class BreathworkController extends GetxController{
     await mix1Player.play();
     await mix2Player.play();
     await mix3Player.play();
+    await mix4Player.play();
     isPlaying.value = true;
     count();
   }
