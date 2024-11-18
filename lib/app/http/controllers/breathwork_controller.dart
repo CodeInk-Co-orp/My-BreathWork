@@ -58,7 +58,7 @@ class BreathworkController extends GetxController{
   }
 
   Future<void> play(String url,String url1,String url2,String url3) async {
-    audioPlayer.play();
+    // audioPlayer.play();
     mix1Player.play();
     mix2Player.play();
     mix3Player.play();

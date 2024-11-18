@@ -60,7 +60,7 @@ class BreathworkScreen extends StatelessWidget {
                   ),
                   Obx(() => Slider(
                     value: breathworkController.sliderValue.value,
-                    max: breathworkController.duration.value,
+                    max: breathworkController.duration.value ?? 11.00,
                     min: 0.0,
                     onChanged: (value) {
                       breathworkController.seek(value);
@@ -138,16 +138,15 @@ class BreathworkScreen extends StatelessWidget {
                     child: Row(
                       children: [
                         Expanded(
-                          child: Obx(()=>Slider(
+                          child: Slider(
                             value: breathworkController.audioPlayer.volume,
-                            max: 6.0,
+                            max: 4.0,
                             min: 0.0,
                             onChanged: (value) {
                               breathworkController.audioPlayer.setVolume(value);
                             },
                            ),
-                         )
-                        ),
+                         ),
                         const Icon(
                           Icons.volume_up_sharp,
                           color: KColors.white,
@@ -194,16 +193,16 @@ class BreathworkScreen extends StatelessWidget {
                             angle: -pi / 2,
                             child: SizedBox(
                               width: 110,
-                              child: Obx(() => Slider(
+                              child: Obx(()=>Slider(
                                 value: mixValue.value,
                                 onChanged: (value) {
                                   mixValue.value = value;
-                                  player.setVolume(value);
+                                  // player.setVolume(value);
                                 },
                                 max: 1.0,
                                 min: 0.0,
-                              )
-                            ),
+                             )
+                            )
                            ),
                           ),
                         ],
