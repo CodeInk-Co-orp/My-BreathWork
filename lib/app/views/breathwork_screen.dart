@@ -111,14 +111,11 @@ class BreathworkScreen extends StatelessWidget {
                             await breathworkController.play(audio['url'],audio1['url'],audio2['url'],audio3['url']);
                             await breathworkController.mix1Player.play();
                             breathworkController.mix1Player.setVolume(breathworkController.mix1.value);
-                            // Update states
                             breathworkController.isPlaying.value = true;
                             breathworkController.started.value = true;
                           } else if (!breathworkController.isPlaying.value) {
-                            // Resume both audios if paused
                             await breathworkController.resume();
                           } else {
-                            // Pause both audios if playing
                             await breathworkController.pause();
                           }
                             // breathworkController.play(audio['url'],audio1['url'],audio2['url'],audio3['url']);
@@ -131,7 +128,7 @@ class BreathworkScreen extends StatelessWidget {
                             size: 35,
                           ),
                         ),
-                      ),
+                      ), 
                       const SizedBox(width: 12),
                       const Icon(
                         Icons.skip_next_sharp,
