@@ -37,7 +37,6 @@ class BreathworkScreen extends StatelessWidget {
             final audio2 = audioList[1].data();
             final audio3 = audioList[2].data();
             final audio = audioList[3].data();
-
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -67,8 +66,7 @@ class BreathworkScreen extends StatelessWidget {
                       breathworkController.seek(value);
                     },
                   )
-                ),
-                  
+                 ),
                   Obx(() {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -106,8 +104,7 @@ class BreathworkScreen extends StatelessWidget {
                         size: 35,
                       ),
                       const SizedBox(width: 12),
-                      Obx(
-                        () => GestureDetector(
+                      Obx(() => GestureDetector(
                           onTap: () async {
                             if (!breathworkController.isPlaying.value && !breathworkController.started.value) {
                               await breathworkController.play(audio['url'], audio1['url'], audio2['url'], audio3['url']);
@@ -140,17 +137,17 @@ class BreathworkScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Row(
                       children: [
-                        Obx(() => Expanded(
-                          child: Slider(
+                        Expanded(
+                          child: Obx(()=>Slider(
                             value: breathworkController.audioPlayer.volume,
-                            max: 1.0,
+                            max: 6.0,
                             min: 0.0,
                             onChanged: (value) {
                               breathworkController.audioPlayer.setVolume(value);
                             },
-                          ),
-                        )
-                          ),
+                           ),
+                         )
+                        ),
                         const Icon(
                           Icons.volume_up_sharp,
                           color: KColors.white,
@@ -175,24 +172,44 @@ class BreathworkScreen extends StatelessWidget {
                         breathworkController.mix3,
                         breathworkController.mix4
                       ][index];
-                      return Transform.rotate(
-                        angle: -pi / 2,
-                        child: SizedBox(
-                          width: 110,
-                          child: Obx(() => Slider(
-                            value: mixValue.value,
-                            onChanged: (value) {
-                              mixValue.value = value;
-                              player.setVolume(value);
-                            },
-                            max: 1.0,
-                            min: 0.0,
-                          )
-                        ),
-                      ),
+                      final sliderIcons = [
+                        Icons.music_note,
+                        Icons.audiotrack, 
+                        Icons.volume_up, 
+                        Icons.headset, 
+                      ];
+                      return Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 25,
+                            backgroundColor: KColors.white,
+                            child: Icon(
+                              sliderIcons[index],
+                              size: 28,
+                              color: KColors.primary,
+                            ),
+                          ),
+                          SizedBox(height: verticalSpace(context, 0.05)),
+                          Transform.rotate(
+                            angle: -pi / 2,
+                            child: SizedBox(
+                              width: 110,
+                              child: Obx(() => Slider(
+                                value: mixValue.value,
+                                onChanged: (value) {
+                                  mixValue.value = value;
+                                  player.setVolume(value);
+                                },
+                                max: 1.0,
+                                min: 0.0,
+                              )
+                            ),
+                           ),
+                          ),
+                        ],
                       );
                     }
-                   ),
+                    ),
                   ),
                   SizedBox(height: verticalSpace(context, 0.03)),
                 ],
