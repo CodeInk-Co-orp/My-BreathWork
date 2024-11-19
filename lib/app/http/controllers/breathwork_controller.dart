@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:my_breath_work/app/services/local_storage.dart';
@@ -20,37 +19,25 @@ class BreathworkController extends GetxController{
   String? previousBreathwork;
   RxBool isPlaying = false.obs;
   var sliderValue = 0.0.obs; 
-  var duration = 0.0.obs;
+  var   duration = 0.0.obs;
   var duration1 = 0.0.obs;
   var duration2 = 0.0.obs;
   var duration3 = 0.0.obs;
   var duration4 = 0.0.obs;
   var volume = 0.0.obs;
   var audioFiles = <Map<String, dynamic>>[].obs; 
-  var isLoading = false.obs; 
+  final RxBool _isLoaded = false.obs;
+  bool get isLoaded => _isLoaded.value;
 
   Stream<DocumentSnapshot<Map<String, dynamic>>> dataStream(String id){
     return firebaseFirestore.collection('breathwork').doc(id).snapshots();
   }
+
   AudioPlayer audioPlayer = AudioPlayer();
   AudioPlayer mix1Player = AudioPlayer();
   AudioPlayer mix2Player = AudioPlayer();
   AudioPlayer mix3Player = AudioPlayer();
   AudioPlayer mix4Player = AudioPlayer();
-
-  Future<void> loadMusic(String asset) async {
-    ByteData byteData = await rootBundle.load(asset);
-    Uint8List bytes = byteData.buffer.asUint8List();
-    choice = MyCustomSource(bytes);
-    await audioPlayer.setAudioSource(choice!);
-  }
-
-   Future<void> readMusic(String asset, String mix1, String mix2, String mix3/*, String mix4*/) async {
-    await audioPlayer.setAudioSource(AudioSource.asset('music/speech/amelia_english.wav'));
-    await mix1Player.setAudioSource(AudioSource.asset(mix1));
-    await mix2Player.setAudioSource(AudioSource.asset(mix2));
-    await mix3Player.setAudioSource(AudioSource.asset(mix3));
-  }
 
   Future<void> setId() async {
     previousBreathwork = await fetchId();
@@ -104,30 +91,36 @@ class BreathworkController extends GetxController{
     count();
   }
   
- void audioplay(String url,String url1,String url2,String url3) async {
-   await audioPlayer.setUrl(url);
-   await mix1Player.setUrl(url1);
-   await mix2Player.setUrl(url2);
-   await mix3Player.setUrl(url3);
-    audioPlayer.durationStream.listen((audioDuration) {
+  void audioplay(String url,String url1,String url2,String url3) async {
+    _isLoaded.value = false;
+    await audioPlayer.setUrl(url);
+    await mix1Player.setUrl(url1);
+    await mix2Player.setUrl(url2);
+    await mix3Player.setUrl(url3);
+    audioPlayer.durationStream.listen(
+      (audioDuration) {
         if (audioDuration != null) {
           duration.value = audioDuration.inSeconds.toDouble();
+          _isLoaded.value = true;
         }
       }      
     );
-    mix1Player.durationStream.listen((audioDuration) {
+    mix1Player.durationStream.listen(
+      (audioDuration) {
         if (audioDuration != null) {
           duration1.value = audioDuration.inSeconds.toDouble(); 
         }
       }      
     );  
-    mix2Player.durationStream.listen((audioDuration) {
+    mix2Player.durationStream.listen(
+      (audioDuration) {
         if (audioDuration != null) {
           duration2.value = audioDuration.inSeconds.toDouble(); 
         }
       }      
     );    
-    mix3Player.durationStream.listen((audioDuration) {
+    mix3Player.durationStream.listen(
+      (audioDuration) {
         if (audioDuration != null) {
           duration3.value = audioDuration.inSeconds.toDouble(); 
         }
@@ -184,5 +177,15 @@ class BreathworkController extends GetxController{
   void onInit() {
     setId();
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    audioPlayer.stop();
+    mix1Player.stop();
+    mix2Player.stop();
+    mix3Player.stop();
+    mix4Player.stop();
+    super.onClose();
   }
 }

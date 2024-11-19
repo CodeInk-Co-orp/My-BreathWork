@@ -58,9 +58,10 @@ class BreathworkScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Obx(() => Slider(
+                  Obx(
+                    () => Slider(
                     value: breathworkController.sliderValue.value,
-                    max: breathworkController.duration.value ?? 11.00,
+                    max: breathworkController.isLoaded ? breathworkController.duration.value : 200,
                     min: 0.0,
                     onChanged: (value) {
                       breathworkController.seek(value);
