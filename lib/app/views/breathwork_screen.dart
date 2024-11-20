@@ -200,7 +200,7 @@ class BreathworkScreen extends StatelessWidget {
                                   mixValue.value = value;
                                   // player.setVolume(value);
                                 },
-                                max: 1.0,
+                                max: player.volume,
                                 min: 0.0,
                              )
                             )
