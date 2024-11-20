@@ -287,6 +287,7 @@ class ChooseScreen extends StatelessWidget {
                                   physics: const ClampingScrollPhysics(),
                                   itemBuilder: (context, index) => ListTile(
                                     onTap: () async {
+                                      chooseController.stopAllPlayers();
                                       await storeId(docs[index].id);
                                       Get.toNamed(
                                         '/my_breathwork',

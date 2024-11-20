@@ -15,16 +15,15 @@ class BreathworkController extends GetxController{
   bool get isLoaded => _isLoaded.value;
 
   // Observable
-  final RxDouble _mix1 = .7.obs; 
-  final RxDouble _mix2 = .7.obs; 
-  final RxDouble _mix3 = .7.obs; 
-  final RxDouble _mix4 = .7.obs;
+  final RxDouble mix1 = .7.obs; 
+  final RxDouble mix2 = .7.obs; 
+  final RxDouble mix3 = .7.obs; 
+  final RxDouble mix4 = .7.obs;
   final RxDouble _audioVolume = .7.obs;
   RxBool started = false.obs;
   RxBool isPlaying = false.obs;
   var sliderValue = 0.0.obs; 
   var duration = 0.0.obs;
-  var duration1 = 0.0.obs;
   var duration2 = 0.0.obs;
   var duration3 = 0.0.obs;
   var duration4 = 0.0.obs;
@@ -32,11 +31,12 @@ class BreathworkController extends GetxController{
   var audioFiles = <Map<String, dynamic>>[].obs; 
   final RxBool _isLoaded = false.obs;
 
+
   // Getters
-  double get mix1 => _mix1.value;
-  double get mix2 => _mix2.value;
-  double get mix3 => _mix3.value;
-  double get mix4 => _mix4.value;
+  // RxDouble get mix1 => _mix1.value.obs;
+  // RxDouble get mix2 => _mix2.value.obs;
+  // RxDouble get mix3 => _mix3.value.obs;
+  // RxDouble get mix4 => _mix4.value.obs;
   double get audioVolume => _audioVolume.value;
 
   Stream<DocumentSnapshot<Map<String, dynamic>>> dataStream(String id){
@@ -44,46 +44,32 @@ class BreathworkController extends GetxController{
   }
 
   AudioPlayer audioPlayer = AudioPlayer();
-  AudioPlayer mix1Player = AudioPlayer();
+  AudioPlayer backgroundPlayer = AudioPlayer();
   AudioPlayer mix2Player = AudioPlayer();
   AudioPlayer mix3Player = AudioPlayer();
   AudioPlayer mix4Player = AudioPlayer();
+
+  void initiateMusic() async {
+    await backgroundPlayer.setAsset("assets/music/Space_[music_background_audio_file].mp3");
+    backgroundPlayer..play()..setVolume(.5);
+  }
+
+  void pauseBackground(){
+    backgroundPlayer.pause();
+  }
+
+  void resumeBackground(){
+    backgroundPlayer.play();
+  }
 
   Future<void> setId() async {
     previousBreathwork = await fetchId();
     Logging.print(previousBreathwork);
   }
 
-  Future<void> play(String url,String url1,String url2,String url3) async {
-    // audioPlayer.play();
-    mix1Player.play();
-    mix2Player.play();
-    mix3Player.play();
-    mix4Player.play();
-    // mix1Player.setLoopMode(LoopMode.all);
-    // audioPlayer.setLoopMode(LoopMode.all);
-    // mix1Player.setLoopMode(LoopMode.all);
-    // mix2Player.setLoopMode(LoopMode.all);
-    // mix3Player.setLoopMode(LoopMode.all);
-    isPlaying.value = true;
-    started.value = true;
-    audioplay(url, url1, url2, url3);
-    count();
-  }
-
-  void count(){
-    if(sliderValue.value < 660){
-      timer = Timer.periodic(const Duration(milliseconds: 250), (timer){
-        sliderValue.value += .25;
-      });
-    } else {
-      timer!.cancel();
-    }
-  }
-
   Future<void> pause() async {
+    resumeBackground();
     audioPlayer.pause();
-    mix1Player.pause();
     mix2Player.pause();
     mix3Player.pause();
     mix4Player.pause();
@@ -92,21 +78,20 @@ class BreathworkController extends GetxController{
   }
 
   Future<void> resume() async {
+    pauseBackground();
     audioPlayer.play();
-    mix1Player.play();
     mix2Player.play();
     mix3Player.play();
     mix4Player.play();
     isPlaying.value = true;
-    count();
   }
   
-  void audioplay(String url,String url1,String url2,String url3) async {
+  Future<void> audioplay(String url,String url1,String url2,String url3) async {
+    pauseBackground();
     _isLoaded.value = false;
-    await audioPlayer.setUrl(url);
-    await mix1Player.setUrl(url1);
-    await mix2Player.setUrl(url2);
-    await mix3Player.setUrl(url3);
+    audioPlayer.setUrl(url);
+    mix2Player.setUrl(url1);
+    mix3Player.setUrl(url2);
     audioPlayer.durationStream.listen(
       (audioDuration) {
         if (audioDuration != null) {
@@ -115,13 +100,6 @@ class BreathworkController extends GetxController{
         }
       }      
     );
-    mix1Player.durationStream.listen(
-      (audioDuration) {
-        if (audioDuration != null) {
-          duration1.value = audioDuration.inSeconds.toDouble(); 
-        }
-      }      
-    );  
     mix2Player.durationStream.listen(
       (audioDuration) {
         if (audioDuration != null) {
@@ -142,30 +120,18 @@ class BreathworkController extends GetxController{
         }
       }      
     );
-      audioPlayer.play();
-      mix1Player.play();
-      mix2Player.play();
-      mix3Player.play();
-      mix4Player.play();
-      isPlaying.value = true;
-      audioPlayer.positionStream.listen((position) {
+    audioPlayer.setLoopMode(LoopMode.all);
+    mix2Player.setLoopMode(LoopMode.all);
+    mix3Player.setLoopMode(LoopMode.all);
+    audioPlayer.play();
+    mix2Player.play();
+    mix3Player.play();
+    mix4Player.play();
+    isPlaying.value = true;
+    started.value = true;
+    audioPlayer.positionStream.listen(
+      (position) {
         sliderValue.value = position.inSeconds.toDouble();
-      }
-    );
-    mix1Player.positionStream.listen((position) {
-        _mix1.value = position.inSeconds.toDouble();
-      }
-    );
-    mix2Player.positionStream.listen((position) {
-        _mix2.value = position.inSeconds.toDouble();
-      }
-    );
-    mix3Player.positionStream.listen((position) {
-        _mix3.value = position.inSeconds.toDouble();
-      }
-    );
-    mix4Player.positionStream.listen((position) {
-        _mix4.value = position.inSeconds.toDouble();
       }
     );
   }
@@ -177,30 +143,33 @@ class BreathworkController extends GetxController{
   }
 
   // Setters
-  void setMix1(double value) => _mix1.value = value;
-  void setMix2(double value) => _mix2.value = value;
-  void setMix3(double value) => _mix3.value = value;
-  void setMix4(double value) => _mix4.value = value;
-  void setAudioVolume(double value) => _audioVolume.value = value;
-  void setMixplayer1() => mix1Player.setVolume(mix1);
-  void setMixplayer2() => mix1Player.setVolume(mix2);
-  void setMixplayer3() => mix1Player.setVolume(mix3);
-  void setMixplayer4() => mix1Player.setVolume(mix4);
-  void setAudioplayer() => audioPlayer.setVolume(audioVolume);
+  void setMix1(double value) => mix1.value = value;
+  void setMix2(double value) => mix2.value = value;
+  void setMix3(double value) => mix3.value = value;
+  void setMix4(double value) => mix4.value = value;
+  void setAudioplayer() => audioPlayer.setVolume(mix1.value);
+  void setMixplayer2() => mix2Player.setVolume(mix2.value);
+  void setMixplayer3() => mix3Player.setVolume(mix3.value);
+  void setMixplayer4() => mix4Player.setVolume(mix4.value);
+
+  void stopPlayers(){
+    audioPlayer.stop();
+    mix2Player.stop();
+    mix3Player.stop();
+    mix4Player.stop();
+  }
 
   @override
   void onInit() {
     setId();
+    initiateMusic();
+    stopPlayers();
     super.onInit();
   }
 
   @override
   void onClose() {
-    audioPlayer.stop();
-    mix1Player.stop();
-    mix2Player.stop();
-    mix3Player.stop();
-    mix4Player.stop();
+    stopPlayers();
     super.onClose();
   }
 }

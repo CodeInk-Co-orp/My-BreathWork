@@ -70,6 +70,11 @@ class ChooseController extends GetxController{
     return firebaseFirestore.collection('breathwork').snapshots();
   }
 
+  void stopAllPlayers(){
+    audioPlayer.stop();
+    voiceAudioPlayer.stop();
+  }
+
   redirect(){
     User? user = FirebaseAuth.instance.currentUser;
     if(user == null){
@@ -79,7 +84,6 @@ class ChooseController extends GetxController{
 
   @override
   void onInit() {
-    togglePlayer();
     redirect();
     super.onInit();
   }
