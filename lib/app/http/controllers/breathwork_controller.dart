@@ -9,17 +9,21 @@ import '../providers/text_to_speech_provider.dart';
 
 class BreathworkController extends GetxController{
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  RxDouble mix1 = .7.obs; 
-  RxDouble mix2 = .7.obs; 
-  RxDouble mix3 = .7.obs; 
-  RxDouble mix4 = .7.obs;
-  RxBool started = false.obs;
   MyCustomSource? choice;
   Timer? timer;
   String? previousBreathwork;
+  bool get isLoaded => _isLoaded.value;
+
+  // Observable
+  final RxDouble _mix1 = .7.obs; 
+  final RxDouble _mix2 = .7.obs; 
+  final RxDouble _mix3 = .7.obs; 
+  final RxDouble _mix4 = .7.obs;
+  final RxDouble _audioVolume = .7.obs;
+  RxBool started = false.obs;
   RxBool isPlaying = false.obs;
   var sliderValue = 0.0.obs; 
-  var   duration = 0.0.obs;
+  var duration = 0.0.obs;
   var duration1 = 0.0.obs;
   var duration2 = 0.0.obs;
   var duration3 = 0.0.obs;
@@ -27,7 +31,13 @@ class BreathworkController extends GetxController{
   var volume = 0.0.obs;
   var audioFiles = <Map<String, dynamic>>[].obs; 
   final RxBool _isLoaded = false.obs;
-  bool get isLoaded => _isLoaded.value;
+
+  // Getters
+  double get mix1 => _mix1.value;
+  double get mix2 => _mix2.value;
+  double get mix3 => _mix3.value;
+  double get mix4 => _mix4.value;
+  double get audioVolume => _audioVolume.value;
 
   Stream<DocumentSnapshot<Map<String, dynamic>>> dataStream(String id){
     return firebaseFirestore.collection('breathwork').doc(id).snapshots();
@@ -72,21 +82,21 @@ class BreathworkController extends GetxController{
   }
 
   Future<void> pause() async {
-    await audioPlayer.pause();
-    await mix1Player.pause();
-    await mix2Player.pause();
-    await mix3Player.pause();
-    await mix4Player.pause();
+    audioPlayer.pause();
+    mix1Player.pause();
+    mix2Player.pause();
+    mix3Player.pause();
+    mix4Player.pause();
     isPlaying.value = false;
     timer!.cancel();
   }
 
   Future<void> resume() async {
-    await audioPlayer.play();
-    await mix1Player.play();
-    await mix2Player.play();
-    await mix3Player.play();
-    await mix4Player.play();
+    audioPlayer.play();
+    mix1Player.play();
+    mix2Player.play();
+    mix3Player.play();
+    mix4Player.play();
     isPlaying.value = true;
     count();
   }
@@ -132,47 +142,52 @@ class BreathworkController extends GetxController{
         }
       }      
     );
-    await audioPlayer.play();
-    await mix1Player.play();
-    await mix2Player.play();
-    await mix3Player.play();
-    await mix4Player.play();
-    isPlaying.value = true;
-    audioPlayer.positionStream.listen((position) {
-      sliderValue.value = position.inSeconds.toDouble();
-    }
-  );
+      audioPlayer.play();
+      mix1Player.play();
+      mix2Player.play();
+      mix3Player.play();
+      mix4Player.play();
+      isPlaying.value = true;
+      audioPlayer.positionStream.listen((position) {
+        sliderValue.value = position.inSeconds.toDouble();
+      }
+    );
     mix1Player.positionStream.listen((position) {
-        mix1.value = position.inSeconds.toDouble();
+        _mix1.value = position.inSeconds.toDouble();
       }
     );
     mix2Player.positionStream.listen((position) {
-        mix2.value = position.inSeconds.toDouble();
+        _mix2.value = position.inSeconds.toDouble();
       }
     );
     mix3Player.positionStream.listen((position) {
-        mix3.value = position.inSeconds.toDouble();
+        _mix3.value = position.inSeconds.toDouble();
       }
     );
     mix4Player.positionStream.listen((position) {
-        mix4.value = position.inSeconds.toDouble();
+        _mix4.value = position.inSeconds.toDouble();
       }
     );
-}
+  }
   void seek(double value) {
     if (value <= duration.value) {
       audioPlayer.seek(Duration(seconds: value.toInt()));
-      mix1Player.seek(Duration(seconds: value.toInt()));
-      mix2Player.seek(Duration(seconds: value.toInt()));
-      mix3Player.seek(Duration(seconds: value.toInt()));
-      mix4Player.seek(Duration(seconds: value.toInt()));
       sliderValue.value = value;
-      mix1.value = value;
-      mix2.value = value;
-      mix3.value = value;
-      mix4.value = value;
     }
-}
+  }
+
+  // Setters
+  void setMix1(double value) => _mix1.value = value;
+  void setMix2(double value) => _mix2.value = value;
+  void setMix3(double value) => _mix3.value = value;
+  void setMix4(double value) => _mix4.value = value;
+  void setAudioVolume(double value) => _audioVolume.value = value;
+  void setMixplayer1() => mix1Player.setVolume(mix1);
+  void setMixplayer2() => mix1Player.setVolume(mix2);
+  void setMixplayer3() => mix1Player.setVolume(mix3);
+  void setMixplayer4() => mix1Player.setVolume(mix4);
+  void setAudioplayer() => audioPlayer.setVolume(audioVolume);
+
   @override
   void onInit() {
     setId();

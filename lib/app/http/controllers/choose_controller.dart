@@ -62,7 +62,7 @@ class ChooseController extends GetxController{
     } catch(e){
       Get.snackbar("Failed!!!", e.toString());
       loading.value = false;
-      rethrow;
+      // rethrow;
     }
   }
 

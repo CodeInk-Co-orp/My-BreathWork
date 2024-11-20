@@ -105,7 +105,8 @@ class BreathworkScreen extends StatelessWidget {
                         size: 35,
                       ),
                       const SizedBox(width: 12),
-                      Obx(() => GestureDetector(
+                      Obx(
+                        () => GestureDetector(
                           onTap: () async {
                             if (!breathworkController.isPlaying.value && !breathworkController.started.value) {
                               await breathworkController.play(audio['url'], audio1['url'], audio2['url'], audio3['url']);
@@ -139,14 +140,17 @@ class BreathworkScreen extends StatelessWidget {
                     child: Row(
                       children: [
                         Expanded(
-                          child: Slider(
-                            value: breathworkController.audioPlayer.volume,
-                            max: 4.0,
-                            min: 0.0,
-                            onChanged: (value) {
-                              breathworkController.audioPlayer.setVolume(value);
-                            },
-                           ),
+                          child: Obx(
+                            () => Slider(
+                              value: breathworkController.audioVolume,
+                              max: 1.0,
+                              min: 0.0,
+                              onChanged: (value) {
+                                breathworkController.setAudioVolume(value);
+                                breathworkController.setAudioplayer();
+                              },
+                             ),
+                          ),
                          ),
                         const Icon(
                           Icons.volume_up_sharp,
@@ -194,15 +198,27 @@ class BreathworkScreen extends StatelessWidget {
                             angle: -pi / 2,
                             child: SizedBox(
                               width: 110,
-                              child: Obx(()=>Slider(
-                                value: mixValue.value,
+                              child: Obx(
+                                ()=> Slider(
+                                value: mixValue,
                                 onChanged: (value) {
-                                  mixValue.value = value;
-                                  // player.setVolume(value);
+                                  if(index == 0){
+                                    breathworkController.setMix1(value);
+                                    breathworkController.setMixplayer1();
+                                  } else if(index == 1){
+                                    breathworkController.setMix2(value);
+                                    breathworkController.setMixplayer1();
+                                  } else if(index == 3){
+                                    breathworkController.setMix3(value);
+                                    breathworkController.setMixplayer1();
+                                  } else {
+                                    breathworkController.setMix4(value);
+                                    breathworkController.setMixplayer1();
+                                  }
                                 },
-                                max: 1.0,
+                                max: (player.duration != null ? player.duration!.inSeconds : 1).toDouble(),
                                 min: 0.0,
-                             )
+                              )
                             )
                            ),
                           ),
