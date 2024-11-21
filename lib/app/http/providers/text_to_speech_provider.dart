@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 
-MyCustomSource? myCustomSource;
+Uint8List? myCustomSource;
 
 Future<void> sendRequest(String input, int user) async {
   List<String> voiceType = ['JBFqnCBsd6RMkjVDRZzb', 'cgSgspJ2msm6clMCkdW9','bIHbv24MWmeRgasZH58o', 'EXAVITQu4vr4xnSDxMaL'];
@@ -23,7 +24,7 @@ Future<void> sendRequest(String input, int user) async {
       },
     ).then(
       (value) {
-        myCustomSource = MyCustomSource(value.bodyBytes);
+        myCustomSource = value.bodyBytes;
       },
     );
   } on FormatException {
@@ -32,20 +33,20 @@ Future<void> sendRequest(String input, int user) async {
 }
 
 // Feed your own stream of bytes into the player
-class MyCustomSource {
-  final List<int> bytes;
-  MyCustomSource(this.bytes);
+// class MyCustomSource {
+//   final List<int> bytes;
+//   MyCustomSource(this.bytes);
   
-  @override
-  Future request([int? start, int? end]) async {
-    start ??= 0;
-    end ??= bytes.length;
-    // return StreamAudioResponse(
-    //   sourceLength: bytes.length,
-    //   contentLength: end - start,
-    //   offset: start,
-    //   stream: Stream.value(bytes.sublist(start, end)),
-    //   contentType: 'audio/mpeg',
-    // );
-  }
-}
+//   @override
+//   Future request([int? start, int? end]) async {
+//     start ??= 0;
+//     end ??= bytes.length;
+//     // return StreamAudioResponse(
+//     //   sourceLength: bytes.length,
+//     //   contentLength: end - start,
+//     //   offset: start,
+//     //   stream: Stream.value(bytes.sublist(start, end)),
+//     //   contentType: 'audio/mpeg',
+//     // );
+//   }
+// }

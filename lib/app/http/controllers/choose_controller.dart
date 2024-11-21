@@ -21,20 +21,16 @@ class ChooseController extends GetxController{
     try{
       String text = await replaceData(dummyVoices[voice.value]);
       await sendRequest(text, voice.value);
-      // await voiceAudioPlayer.setAudioSource(myCustomSource!);
-      // await voiceAudioPlayer.play();
+      await voiceAudioPlayer.play(BytesSource(myCustomSource!));
     } catch(e){
       Logging.print("Error: $e");
-      // rethrow;
     }
   }
 
   Future<void> loadMusic(String asset) async {
     ByteData byteData = await rootBundle.load(asset);
     Uint8List bytes = byteData.buffer.asUint8List();
-    MyCustomSource choice = MyCustomSource(bytes);
-    // await audioPlayer.setAudioSource(choice);
-    // await audioPlayer.play();
+    await audioPlayer.play(BytesSource(bytes));
   }
 
   Future<void> createBreathwork() async {

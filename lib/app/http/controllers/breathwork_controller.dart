@@ -4,11 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:my_breath_work/app/services/local_storage.dart';
 import 'package:my_breath_work/app/services/logging.dart';
-import '../providers/text_to_speech_provider.dart';
 
 class BreathworkController extends GetxController{
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  MyCustomSource? choice;
   Timer? timer;
   String? previousBreathwork;
   bool get isLoaded => _isLoaded.value;
@@ -49,8 +47,7 @@ class BreathworkController extends GetxController{
   AudioPlayer mix4Player = AudioPlayer();
 
   void initiateMusic() async {
-    await backgroundPlayer.setSourceAsset("assets/music/Space_[music_background_audio_file].mp3");
-    // backgroundPlayer..play()..setVolume(.5);
+    backgroundPlayer..play(AssetSource("assets/music/Space_[music_background_audio_file].mp3"))..setVolume(mix1.value);
   }
 
   void pauseBackground(){
@@ -58,7 +55,7 @@ class BreathworkController extends GetxController{
   }
 
   void resumeBackground(){
-    // backgroundPlayer.play();
+    backgroundPlayer.resume();
   }
 
   Future<void> setId() async {
@@ -78,48 +75,46 @@ class BreathworkController extends GetxController{
 
   Future<void> resume() async {
     pauseBackground();
-    // audioPlayer.play();
-    // mix2Player.play();
-    // mix3Player.play();
-    // mix4Player.play();
+    audioPlayer.resume();
+    mix2Player.resume();
+    mix3Player.resume();
+    mix4Player.resume();
     isPlaying.value = true;
   }
   
   Future<void> audioplay(String url,String url1,String url2,String url3) async {
-    pauseBackground();
-    _isLoaded.value = false;
-    audioPlayer.setSourceUrl(url);
-    mix2Player.setSourceUrl(url1);
-    mix3Player.setSourceUrl(url2);
-    audioPlayer.getDuration().then((audioDuration)=>(audioDuration){
-        duration.value = audioDuration.inSeconds.toDouble(); 
-      }
-    );
-    mix2Player.getDuration().then((audioDuration)=>(audioDuration){
-        duration2.value = audioDuration.inSeconds.toDouble(); 
-      }
-    );  
-    mix3Player.getDuration().then((audioDuration)=>(audioDuration){
-        duration3.value = audioDuration.inSeconds.toDouble(); 
-      }
-    );
-    mix4Player.getDuration().then((audioDuration)=>(audioDuration){
-        duration4.value = audioDuration.inSeconds.toDouble(); 
-      }
-    );
-    // audioPlayer.setLoopMode(LoopMode.all);
-    // mix2Player.setLoopMode(LoopMode.all);
-    // mix3Player.setLoopMode(LoopMode.all);
-    audioPlayer.play(UrlSource(url));
-    mix2Player.play(UrlSource(url1));
-    mix3Player.play(UrlSource(url2));
-    mix4Player.play(UrlSource(url3));
-    isPlaying.value = true;
-    started.value = true;
-    audioPlayer.getCurrentPosition().then((position)=>(position) {
-      sliderValue.value = position.inSeconds.toDouble();
-      }
-    );
+    try{
+      pauseBackground();
+      _isLoaded.value = false;
+      await audioPlayer.play(UrlSource(url), volume: mix1.value);
+      await mix2Player.play((UrlSource(url)), volume: mix2.value);
+      await mix3Player.play(UrlSource(url2), volume: mix3.value);
+      audioPlayer.getDuration().then((audioDuration)=>(audioDuration){
+          duration.value = audioDuration.inSeconds.toDouble(); 
+        }
+      );
+      mix2Player.getDuration().then((audioDuration)=>(audioDuration){
+          duration2.value = audioDuration.inSeconds.toDouble(); 
+        }
+      );  
+      mix3Player.getDuration().then((audioDuration)=>(audioDuration){
+          duration3.value = audioDuration.inSeconds.toDouble(); 
+        }
+      );
+      mix4Player.getDuration().then((audioDuration)=>(audioDuration){
+          duration4.value = audioDuration.inSeconds.toDouble(); 
+        }
+      );
+      isPlaying.value = true;
+      started.value = true;
+      audioPlayer.getCurrentPosition().then(
+        (position) => (position) {
+          sliderValue.value = position.inSeconds.toDouble();
+        }
+      );
+    } catch(e){
+      Logging.print(e);
+    }
   }
   void seek(double value) {
     if (value <= duration.value) {
