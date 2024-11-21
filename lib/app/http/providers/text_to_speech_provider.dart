@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:just_audio/just_audio.dart';
 import 'package:http/http.dart' as http;
 
 MyCustomSource? myCustomSource;
@@ -18,8 +17,8 @@ Future<void> sendRequest(String input, int user) async {
         },
       }),
       headers: {
-        'xi-api-key': 'sk_551afec91d9a8017066146f6c2bca1da1ea3ff4a23cb611d',
-        // 'xi-api-key': 'cbb45823b2c4ddce4ffe0eeef3f5dd99',
+        // 'xi-api-key': 'sk_551afec91d9a8017066146f6c2bca1da1ea3ff4a23cb611d',
+        'xi-api-key': 'cbb45823b2c4ddce4ffe0eeef3f5dd99',
         'Content-Type': 'application/json'
       },
     ).then(
@@ -28,25 +27,25 @@ Future<void> sendRequest(String input, int user) async {
       },
     );
   } on FormatException {
-    rethrow;
+    // rethrow;
   }
 }
 
 // Feed your own stream of bytes into the player
-class MyCustomSource extends StreamAudioSource {
+class MyCustomSource {
   final List<int> bytes;
   MyCustomSource(this.bytes);
   
   @override
-  Future<StreamAudioResponse> request([int? start, int? end]) async {
+  Future request([int? start, int? end]) async {
     start ??= 0;
     end ??= bytes.length;
-    return StreamAudioResponse(
-      sourceLength: bytes.length,
-      contentLength: end - start,
-      offset: start,
-      stream: Stream.value(bytes.sublist(start, end)),
-      contentType: 'audio/mpeg',
-    );
+    // return StreamAudioResponse(
+    //   sourceLength: bytes.length,
+    //   contentLength: end - start,
+    //   offset: start,
+    //   stream: Stream.value(bytes.sublist(start, end)),
+    //   contentType: 'audio/mpeg',
+    // );
   }
 }

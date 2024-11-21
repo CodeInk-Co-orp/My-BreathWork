@@ -201,7 +201,7 @@ class AuthController extends GetxController{
         }
       );
     } catch (e) {
-      rethrow;
+      // rethrow;
     }
   }
 

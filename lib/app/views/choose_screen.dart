@@ -259,7 +259,7 @@ class ChooseScreen extends StatelessWidget {
                     width: 250,
                     onPressed: (){
                       chooseController.createBreathwork();
-                      // storageControler.uploadAudio(category: "speech");
+                      // storageControler.uploadAudio(category: "background");
                     },
                     text: 'Create',
                   ),
@@ -287,6 +287,7 @@ class ChooseScreen extends StatelessWidget {
                                   physics: const ClampingScrollPhysics(),
                                   itemBuilder: (context, index) => ListTile(
                                     onTap: () async {
+                                      chooseController.stopAllPlayers();
                                       await storeId(docs[index].id);
                                       Get.toNamed(
                                         '/my_breathwork',

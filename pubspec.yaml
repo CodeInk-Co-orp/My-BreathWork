@@ -44,13 +44,14 @@ dependencies:
   firebase_core: ^3.6.0
   firebase_auth: ^5.3.1
   cloud_firestore: ^5.4.4
-  just_audio: ^0.9.42
+  # just_audio: ^0.9.42
   csv: ^6.0.0
   shared_preferences: ^2.3.2
   http: ^1.2.2
   skeletonizer: ^1.4.2
   firebase_storage: ^12.3.5
   file_picker: ^8.1.4
+  audioplayers: ^6.1.0
   
 dev_dependencies:
   flutter_test:

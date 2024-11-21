@@ -1,1 +1,37 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"mybreathwork-a7a56","appId":"1:14643166336:android:9576477088bebf85797a65","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"mybreathwork-a7a56","configurations":{"android":"1:14643166336:android:9576477088bebf85797a65","ios":"1:14643166336:ios:bcc7585f2b4ab0be797a65","web":"1:14643166336:web:879dd9908af858b1797a65"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "mybreathwork-a7a56",
+          "appId": "1:14643166336:android:9576477088bebf85797a65",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "mybreathwork-a7a56",
+          "configurations": {
+            "android": "1:14643166336:android:9576477088bebf85797a65",
+            "ios": "1:14643166336:ios:bcc7585f2b4ab0be797a65",
+            "web": "1:14643166336:web:879dd9908af858b1797a65"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

@@ -1,8 +1,8 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:my_breath_work/app/data/dummy.dart';
 import 'package:my_breath_work/app/http/providers/text_to_speech_provider.dart';
 import 'package:my_breath_work/app/services/local_storage.dart';
@@ -21,8 +21,8 @@ class ChooseController extends GetxController{
     try{
       String text = await replaceData(dummyVoices[voice.value]);
       await sendRequest(text, voice.value);
-      await voiceAudioPlayer.setAudioSource(myCustomSource!);
-      await voiceAudioPlayer.play();
+      // await voiceAudioPlayer.setAudioSource(myCustomSource!);
+      // await voiceAudioPlayer.play();
     } catch(e){
       Logging.print("Error: $e");
       // rethrow;
@@ -33,8 +33,8 @@ class ChooseController extends GetxController{
     ByteData byteData = await rootBundle.load(asset);
     Uint8List bytes = byteData.buffer.asUint8List();
     MyCustomSource choice = MyCustomSource(bytes);
-    await audioPlayer.setAudioSource(choice);
-    await audioPlayer.play();
+    // await audioPlayer.setAudioSource(choice);
+    // await audioPlayer.play();
   }
 
   Future<void> createBreathwork() async {
@@ -62,12 +62,17 @@ class ChooseController extends GetxController{
     } catch(e){
       Get.snackbar("Failed!!!", e.toString());
       loading.value = false;
-      rethrow;
+      // rethrow;
     }
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> breathworkSnapshots(){
     return firebaseFirestore.collection('breathwork').snapshots();
+  }
+
+  void stopAllPlayers(){
+    audioPlayer.stop();
+    voiceAudioPlayer.stop();
   }
 
   redirect(){
@@ -79,7 +84,6 @@ class ChooseController extends GetxController{
 
   @override
   void onInit() {
-    togglePlayer();
     redirect();
     super.onInit();
   }
