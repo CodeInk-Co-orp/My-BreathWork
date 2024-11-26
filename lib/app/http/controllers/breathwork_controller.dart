@@ -47,7 +47,31 @@ class BreathworkController extends GetxController{
   AudioPlayer mix4Player = AudioPlayer();
 
   void initiateMusic() async {
-    backgroundPlayer..play(AssetSource("assets/music/Space_[music_background_audio_file].mp3"))..setVolume(mix1.value);
+    // backgroundPlayer..play(AssetSource("assets/music/Space_[music_background_audio_file].mp3",mimeType: "mpeg"))..setVolume(mix1.value);
+      try {
+        FirebaseFirestore.instance
+          .collection('audio')
+          .where('category', isEqualTo: 'background') 
+          .snapshots()
+          .listen((QuerySnapshot<Map<String, dynamic>> snapshot) async {
+          if (snapshot.docs.isNotEmpty) {
+            Map<String, dynamic> audioData = snapshot.docs.first.data();
+            String? audioUrl = audioData['url'];
+
+            if (audioUrl != null && audioUrl.isNotEmpty) {
+              await backgroundPlayer.play(UrlSource(audioUrl));
+              await backgroundPlayer.setVolume(1.0);
+              print('Audio started playing successfully.');
+            } else {
+              print('Audio URL is empty.');
+            }
+          } else {
+            print('No audio documents found in the collection.');
+          }
+        });
+      } catch (e) {
+        print('Error fetching audio: $e');
+    }
   }
 
   void pauseBackground(){
@@ -86,9 +110,9 @@ class BreathworkController extends GetxController{
     try{
       pauseBackground();
       _isLoaded.value = false;
-      await audioPlayer.play(UrlSource(url), volume: mix1.value);
-      await mix2Player.play((UrlSource(url)), volume: mix2.value);
-      await mix3Player.play(UrlSource(url2), volume: mix3.value);
+      await audioPlayer.play(UrlSource(url,mimeType: "mpeg"), volume: mix1.value);
+      await mix2Player.play((UrlSource(url,mimeType: "mpeg")), volume: mix2.value);
+      await mix3Player.play(UrlSource(url2,mimeType: "mpeg"), volume: mix3.value);
       audioPlayer.getDuration().then((audioDuration)=>(audioDuration){
           duration.value = audioDuration.inSeconds.toDouble(); 
         }
@@ -120,6 +144,7 @@ class BreathworkController extends GetxController{
     if (value <= duration.value) {
       audioPlayer.seek(Duration(seconds: value.toInt()));
       sliderValue.value = value;
+      print("Value: $value");
     }
   }
 
