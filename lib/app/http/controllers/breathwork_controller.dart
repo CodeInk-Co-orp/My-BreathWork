@@ -47,7 +47,6 @@ class BreathworkController extends GetxController{
   AudioPlayer mix4Player = AudioPlayer();
 
   void initiateMusic() async {
-    // backgroundPlayer..play(AssetSource("assets/music/Space_[music_background_audio_file].mp3",mimeType: "mpeg"))..setVolume(mix1.value);
       try {
         FirebaseFirestore.instance
           .collection('audio')
@@ -57,9 +56,8 @@ class BreathworkController extends GetxController{
           if (snapshot.docs.isNotEmpty) {
             Map<String, dynamic> audioData = snapshot.docs.first.data();
             String? audioUrl = audioData['url'];
-
             if (audioUrl != null && audioUrl.isNotEmpty) {
-              await backgroundPlayer.play(UrlSource(audioUrl));
+              await backgroundPlayer.play(UrlSource(audioUrl,mimeType: "mp3"));
               await backgroundPlayer.setVolume(1.0);
               print('Audio started playing successfully.');
             } else {
@@ -94,7 +92,7 @@ class BreathworkController extends GetxController{
     mix3Player.pause();
     mix4Player.pause();
     isPlaying.value = false;
-    timer!.cancel();
+    // timer!.cancel();
   }
 
   Future<void> resume() async {
@@ -106,48 +104,54 @@ class BreathworkController extends GetxController{
     isPlaying.value = true;
   }
   
-  Future<void> audioplay(String url,String url1,String url2,String url3) async {
-    try{
-      pauseBackground();
-      _isLoaded.value = false;
-      await audioPlayer.play(UrlSource(url,mimeType: "mpeg"), volume: mix1.value);
-      await mix2Player.play((UrlSource(url,mimeType: "mpeg")), volume: mix2.value);
-      await mix3Player.play(UrlSource(url2,mimeType: "mpeg"), volume: mix3.value);
-      audioPlayer.getDuration().then((audioDuration)=>(audioDuration){
-          duration.value = audioDuration.inSeconds.toDouble(); 
-        }
-      );
-      mix2Player.getDuration().then((audioDuration)=>(audioDuration){
-          duration2.value = audioDuration.inSeconds.toDouble(); 
-        }
-      );  
-      mix3Player.getDuration().then((audioDuration)=>(audioDuration){
-          duration3.value = audioDuration.inSeconds.toDouble(); 
-        }
-      );
-      mix4Player.getDuration().then((audioDuration)=>(audioDuration){
-          duration4.value = audioDuration.inSeconds.toDouble(); 
-        }
-      );
-      isPlaying.value = true;
-      started.value = true;
-      audioPlayer.getCurrentPosition().then(
-        (position) => (position) {
-          sliderValue.value = position.inSeconds.toDouble();
-        }
-      );
-    } catch(e){
-      Logging.print(e);
-    }
+  Future<void> audioplay(String url, String url1, String url2, String url3) async {
+  try {
+    pauseBackground();
+    _isLoaded.value = false;
+    isPlaying.value = false;
+    started.value = false;
+    audioPlayer.onDurationChanged.listen((audioDuration) {
+      duration.value = audioDuration.inSeconds.toDouble();
+    });
+    mix2Player.onDurationChanged.listen((audioDuration) {
+      duration2.value = audioDuration.inSeconds.toDouble();
+    });
+    mix3Player.onDurationChanged.listen((audioDuration) {
+      duration3.value = audioDuration.inSeconds.toDouble();
+    });
+    mix4Player.onDurationChanged.listen((audioDuration) {
+      duration4.value = audioDuration.inSeconds.toDouble();
+    });
+    audioPlayer.onPositionChanged.listen((position) {
+      sliderValue.value = position.inSeconds.toDouble();
+    });
+    await audioPlayer.play(UrlSource(url, mimeType: "audio/mpeg"), volume: mix1.value);
+    await mix2Player.play(UrlSource(url1, mimeType: "audio/mpeg"), volume: mix2.value);
+    await mix3Player.play(UrlSource(url2, mimeType: "audio/mpeg"), volume: mix3.value);
+    await mix4Player.play(UrlSource(url3, mimeType: "audio/mpeg"), volume: mix4.value);
+    isPlaying.value = true;
+    started.value = true;
+    _isLoaded.value = true;
+  } catch (e) {
+    Logging.print("Error in audioplay: $e");
   }
+}
+
   void seek(double value) {
-    if (value <= duration.value) {
+  if (value < 0) {
+    return;
+  }
+  if (value <= duration.value) {
+    if (audioPlayer.state == PlayerState.playing || audioPlayer.state == PlayerState.paused) {
       audioPlayer.seek(Duration(seconds: value.toInt()));
       sliderValue.value = value;
-      print("Value: $value");
+    } else {
+      print("Audio player is not ready for seeking.");
     }
+  } else {
+    print("Seek value exceeds audio duration.");
   }
-
+}
   // Setters
   void setMix1(double value) => mix1.value = value;
   void setMix2(double value) => mix2.value = value;
